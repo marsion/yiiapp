@@ -37,14 +37,10 @@ AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
-                    ['label' => Yii::t('app','Book'), 'url' => ['/book']],
-                    ['label' => Yii::t('app','About'), 'url' => ['/site/about']],
-                    ['label' => Yii::t('app','Contacts'), 'url' => ['/site/contact']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => Yii::t('app','Log in'), 'url' => ['/site/login']] :
-                        ['label' => Yii::t('app','Log out') . ' (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
+                    ['label' => Yii::t('app','Books'), 'url' => ['/books']],
+                    ['label' => Yii::t('app','Authors'), 'url' => ['/authors']],
+                    ['label' => Yii::t('app','About'), 'url' => ['/app/about']],
+                    ['label' => Yii::t('app','Contact us'), 'url' => ['/app/contact']],
                 ],
             ]);
             NavBar::end();
@@ -64,7 +60,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; <?= Yii::t('app', 'My Company') ?> <?= date('Y') ?></p>
+            <p class="pull-left">&copy; <?= Yii::t('app', 'My Company') ?> - <?= date('Y') ?></p>
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>

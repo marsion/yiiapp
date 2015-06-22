@@ -17,27 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'About' => 'Про нас',
-    'Contacts' => 'Контакти',
-    'Home' => 'Головна',
-    'Book' => 'Книги',
     'My Company' => 'Read It',
     'online library' => 'онлайн-бібліотека',
-    'Log in' => 'Вхід',
-    'Log out' => 'Вихід',
-    'If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.' =>
-        'Якщо у вас є ділова пропозиція або інші питання, будь ласка, заповніть наступну форму, щоб зв\'язатися з нами. Дякуємо!',
-    'Are you sure you want to delete this item?' => 'Ви впевнені, що хочете видалити цей пункт?',
-    'Author' => 'Автори',
+    'Home' => 'Головна',
     'Books' => 'Книги',
-    'Create' => 'Створити',
-    'Create Book' => 'Додати книгу',
-    'Delete' => 'Видалити',
-    'Description' => 'Опис',
-    'ID' => 'ID',
-    'Reset' => 'Скинути',
-    'Search' => 'Пошук',
-    'Title' => 'Назва',
-    'Update' => 'Редагувати',
-    'Update {modelClass}: ' => 'Редагувати {modelClass}: ',
+    'Authors' => 'Автори',
+    'About' => 'Про нас',
+    'Contact us' => 'Напишіть нам',
 ];

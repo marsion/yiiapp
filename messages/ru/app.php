@@ -17,17 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure you want to delete this item?' => '',
-    'Author' => '',
-    'Books' => '',
-    'Create' => '',
-    'Create Book' => '',
-    'Delete' => '',
-    'Description' => '',
-    'ID' => '',
-    'Reset' => '',
-    'Search' => '',
-    'Title' => '',
-    'Update' => '',
-    'Update {modelClass}: ' => '',
+    'My Company' => 'Read It',
+    'online library' => 'онлайн-библиотека',
+    'Home' => 'Главная',
+    'Books' => 'Книги',
+    'Authors' => 'Авторы',
+    'About' => 'О нас',
+    'Contact us' => 'Напишите нам'
 ];

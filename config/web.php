@@ -12,7 +12,7 @@ $config = [
 			'showScriptName' => false,
 			'enablePrettyUrl' => true,
             'rules' => array(
-                '' => 'book/index',
+                '' => 'app/index',
             ),
         ],
         'request' => [
