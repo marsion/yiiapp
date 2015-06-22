@@ -5,7 +5,7 @@ use yii\web\Controller;
 
 class BooksController extends Controller {
 
-    public function actionIndex(){
+    public function actionIndex() {
         return $this->render('index');
     }
 }
