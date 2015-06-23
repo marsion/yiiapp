@@ -9,6 +9,14 @@ class Book extends ActiveRecord {
         return 'book';
     }
 
+    public function rules() {
+        return [
+            [['title', 'author', 'description'], 'required'],
+            [['title', 'description'], 'string'],
+            [['author'], 'integer'],
+        ];
+    }
+
     public function attributeLabels() {
         return [
             'id' => 'ID',
@@ -18,12 +26,6 @@ class Book extends ActiveRecord {
         ];
     }
 
-    public function rules() {
-        return [
-            [['title', 'author', 'description'], 'required'],
-            [['title', 'description'], 'string'],
-            [['author'], 'integer'],
-        ];
-    }
+
 }
 ?>

@@ -13,6 +13,12 @@ $config = [
 			'enablePrettyUrl' => true,
             'rules' => array(
                 '' => 'app/index',
+                '<action:(about|contact)>' => 'app/<action>',
+                '<controller:\w+>/<action:(book|author)>' => '<controller>',
+//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+//                '<controller:\w+>/<action:\w+>/' => '<controller>',
+                '<controller:\w+>/<action:\w+>/<id>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ),
         ],
         'request' => [
