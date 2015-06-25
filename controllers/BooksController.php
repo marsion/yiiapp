@@ -1,19 +1,37 @@
 <?php
 namespace app\controllers;
 
+use \Yii;
+use \yii\db;
 use yii\web\Controller;
+use yii\db\Query;
 
 class BooksController extends Controller {
 
-    public function actionIndex() {
-        return $this->render('index');
+    public function actionList()
+    {
+        $data = (new Query())
+        ->select('*')
+        ->from('tbl_book')
+        ->all();
+
+        return $this->render('list', array('data' => $data));
     }
 
-    public function actionBook($id) {
-        if($id == 5)
-            return $this->render('book', ['id' => $id]);
-        else
-            return $this->redirect(array('books/'));
+    public function actionSingle($id) {
+//        $query = "select * from `tbl_book` WHERE `id` = ".$id;
+//        $data = Yii::$app->db->createCommand($query)->query();
+
+        $data = (new Query())
+            ->select('*')
+            ->from('tbl_book')
+            ->where('id = :id')
+            ->addParams([':id' => $id])
+            ->limit(1)
+            ->one();
+        return $this->render('single', array('id' => $id, 'data' => $data));
     }
+
+
 }
 ?>

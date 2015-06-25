@@ -13,12 +13,10 @@ $config = [
 			'enablePrettyUrl' => true,
             'rules' => array(
                 '' => 'app/index',
+                '/' => 'app/index',
                 '<action:(about|contact)>' => 'app/<action>',
-                '<controller:\w+>/<action:(book|author)>' => '<controller>',
-//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-//                '<controller:\w+>/<action:\w+>/' => '<controller>',
-                '<controller:\w+>/<action:\w+>/<id>' => '<controller>/<action>',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>' => '<controller>/list',
+                '<controller:\w+>/<id:\d+>' => '<controller>/single',
             ),
         ],
         'request' => [
@@ -33,7 +31,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+//            'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

@@ -7,4 +7,5 @@ return [
     'password' => 'yiiappuser',
     'charset' => 'utf8',
     'tablePrefix' => 'tbl_',
+    'emulatePrepare'=>true,
 ];

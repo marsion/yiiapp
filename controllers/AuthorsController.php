@@ -6,12 +6,14 @@ use yii\web\Controller;
 
 class AuthorsController extends Controller {
 
-    public function actionIndex(){
-        return $this->render('index');
+    public function actionList()
+    {
+        return $this->render('list');
     }
 
-    public function actionAuthor($id) {
-        return $this->render('author', ['id' => $id]);
+    public function actionSingle($id)
+    {
+        return $this->render('single', ['id' => $id]);
     }
 }
 ?>
