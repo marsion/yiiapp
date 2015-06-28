@@ -3,17 +3,20 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use app\services\AuthorServices;
 
 class AuthorsController extends Controller {
 
     public function actionList()
     {
-        return $this->render('list');
+        $authors = (new AuthorServices())->getAllAuthors();
+        return $this->render('list', array('authors' => $authors));
     }
 
     public function actionSingle($id)
     {
-        return $this->render('single', ['id' => $id]);
+        $author = (new AuthorServices())->getAuthorByID($id);
+        return $this->render('single', array('id' => $id, 'author' => $author));
     }
 }
 ?>
