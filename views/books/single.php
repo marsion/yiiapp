@@ -3,21 +3,27 @@ use yii\helpers\Html;
 ?>
 
 <div class="books_single">
-
-    <table>
-        <tr>
-            <td width="120">Назва: </td>
-            <td><?= Html::a($book->title, [Yii::$app->homeUrl.'books/'.$book->id]) ?></td>
-        </tr>
-        <tr>
-            <td>Автор: </td>
-            <td><?= Html::a($book->authorFirstName.' '.$book->authorLastName,
-                    [Yii::$app->homeUrl.'authors/'.$book->authorId]) ?></td>
-        </tr>
-        <tr>
-            <td>Опис: </td>
-            <td><?php echo $book->description; ?></td>
-        </tr>
-    </table>
+    <div class="post">
+        <div class="thumbnails">
+            <a class="thumb">
+                <img src="../css/img/sample-thumbnail.jpg" width="220" height="300" alt="" />
+            </a>
+        </div>
+        <div class="post_title">
+            <h3>
+                <?php echo '"'.$book->title.'"'; ?>
+            </h3>
+        </div>
+        <div class="post_title">
+            <h5>
+                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authorId; ?>">
+                    <?php echo $book->authorFirstName.' '.$book->authorLastName; ?>
+                </a>
+            </h5>
+        </div>
+        <div class="post_body">
+            <?php echo $book->description; ?>
+        </div>
+    </div>
 
 </div>

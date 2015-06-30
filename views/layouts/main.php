@@ -17,55 +17,218 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) . ' - ' . Yii::t('app', 'My Company') . ' - '
+    <title><?= Html::encode($this->title) . Yii::t('app', 'My Company') . ' - '
         . Yii::t('app', 'online library')?></title>
     <?php $this->head() ?>
 </head>
 <body>
-
 <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => Yii::t('app', 'My Company'),
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
-                ],
-            ]);
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
-                    ['label' => Yii::t('app','Books'), 'url' => ['/books']],
-                    ['label' => Yii::t('app','Authors'), 'url' => ['/authors']],
-                    ['label' => Yii::t('app','About'), 'url' => ['/app/about']],
-                    ['label' => Yii::t('app','Contact us'), 'url' => ['/app/contact']],
-                ],
-            ]);
-            NavBar::end();
-        ?>
+<div id="header">
+    <div class="center_wrapper">
 
-        <div class="container">
-            <?= Breadcrumbs::widget([
-                'homeLink' => [
-                    'label' => Yii::t('yii', 'Home'),
-                    'url' => Yii::$app->homeUrl,
-                ],
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <?= $content ?>
+        <div id="toplinks">
+            <div id="toplinks_inner">
+                <a href="#">Вхід</a> | <a href="#">Реєстрація</a> | <a href="#">FAQ</a></a>
+            </div>
+        </div>
+        <div class="clearer">&nbsp;</div>
+
+        <div id="site_title">
+            <h1><a href="<?php echo Yii::$app->homeUrl; ?>"><span>ЧАС </span>ЧИТАТИ</a></h1>
+            <p>... коли людина припиняє читати, вона перестає мислити ...</p>
+        </div>
+
+    </div>
+</div>
+
+<div id="navigation">
+    <div class="center_wrapper">
+
+        <ul>
+            <li class="current_page_item">
+                <a href="<?php echo Yii::$app->homeUrl; ?>"><?php echo Yii::t('app', 'Home') ?></a>
+            </li>
+            <li><a href="#"><?php echo 'Top-100' ?></a></li>
+            <li><a href="/books"><?php echo Yii::t('app', 'Books') ?></a></li>
+            <li><a href="/authors"><?php echo Yii::t('app', 'Authors') ?></a></li>
+            <li><a href="/app/about"><?php echo Yii::t('app', 'About') ?></a></li>
+            <li><a href="/app/contact"><?php echo Yii::t('app', 'Contact us') ?></a></li>
+        </ul>
+
+        <div class="clearer">&nbsp;</div>
+
+    </div>
+</div>
+
+<div id="main_wrapper_outer">
+    <div id="main_wrapper_inner">
+        <div class="center_wrapper">
+
+            <div class="left" id="main">
+                <div id="main_content">
+                    <!-- ---------------------------- -->
+                    <div>
+                        <?= Breadcrumbs::widget([
+                            'homeLink' => [
+                                'label' => Yii::t('yii', 'Home'),
+                                'url' => Yii::$app->homeUrl,
+                            ],
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        ]) ?>
+                        <?= $content ?>
+                    </div>
+                    <!-- ------------------------ -->
+                </div>
+            </div>
+
+            <div class="right" id="sidebar">
+
+                <div id="sidebar_content">
+
+                    <div class="box">
+
+                        <div class="box_title">About</div>
+
+                        <div class="box_content">
+                            Aenean sit amet dui at felis lobortis dignissim. Pellentesque risus nibh, feugiat in, convallis id, congue ac, sem. Sed tempor neque in quam.
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+
+                        <div class="box_title">Categories</div>
+
+                        <div class="box_content">
+                            <ul>
+                                <li><a href="http://templates.arcsin.se/category/website-templates/">Website Templates</a></li>
+                                <li><a href="http://templates.arcsin.se/category/wordpress-themes/">Wordpress Themes</a></li>
+                                <li><a href="http://templates.arcsin.se/professional-templates/">Professional Templates</a></li>
+                                <li><a href="http://templates.arcsin.se/category/blogger-templates/">Blogger Templates</a></li>
+                                <li><a href="http://templates.arcsin.se/category/joomla-templates/">Joomla Templates</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+
+                        <div class="box_title">Resources</div>
+
+                        <div class="box_content">
+                            <ul>
+                                <li><a href="http://templates.arcsin.se/">Arcsin Web Templates</a></li>
+                                <li><a href="http://www.google.com/" rel="nofollow">Google</a> - Web Search</li>
+                                <li><a href="http://www.w3schools.com/" rel="nofollow">W3Schools</a> - Online Web Tutorials</li>
+                                <li><a href="http://www.wordpress.org/" rel="nofollow">WordPress</a> - Blog Platform</li>
+                                <li><a href="http://cakephp.org/" rel="nofollow">CakePHP</a> - PHP Framework</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+
+                        <div class="box_title">Gallery</div>
+
+                        <div class="box_content">
+
+                            <div class="thumbnails">
+
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+
+                                <div class="clearer">&nbsp;</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="clearer">&nbsp;</div>
+
         </div>
     </div>
+</div>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="pull-left">&copy; <?= Yii::t('app', 'My Company') ?> - <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+<div id="dashboard">
+    <div id="dashboard_content">
+        <div class="center_wrapper">
+
+            <div class="col3 left">
+                <div class="col3_content">
+
+                    <h4>Tincidunt</h4>
+                    <ul>
+                        <li><a href="#">Consequat molestie</a></li>
+                        <li><a href="#">Sem justo</a></li>
+                        <li><a href="#">Semper eros</a></li>
+                        <li><a href="#">Magna sed purus</a></li>
+                        <li><a href="#">Tincidunt morbi</a></li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="col3mid left">
+                <div class="col3_content">
+
+                    <h4>Fermentum</h4>
+                    <ul>
+                        <li><a href="#">Semper fermentum</a></li>
+                        <li><a href="#">Sem justo</a></li>
+                        <li><a href="#">Magna sed purus</a></li>
+                        <li><a href="#">Tincidunt nisl</a></li>
+                        <li><a href="#">Consequat molestie</a></li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="col3 right">
+                <div class="col3_content">
+
+                    <h4>Praesent</h4>
+                    <ul>
+                        <li><a href="#">Semper lobortis</a></li>
+                        <li><a href="#">Consequat molestie</a></li>
+                        <li><a href="#">Magna sed purus</a></li>
+                        <li><a href="#">Sem morbi</a></li>
+                        <li><a href="#">Tincidunt sed</a></li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="clearer">&nbsp;</div>
+
         </div>
-    </footer>
+    </div>
+</div>
+<footer class="footer">
+    <div id="footer">
+        <div class="center_wrapper">
 
-<?php $this->endBody() ?>
+            <div class="left">
+                &copy; <?= Yii::t('app', 'My Company').'! '; ?><?= date('Y') ?>
+            </div>
+            <div class="right">made by <span id="author">kshukost</span></div>
+
+            <div class="clearer">&nbsp;</div>
+
+        </div>
+    </div>
+</footer>
+    <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

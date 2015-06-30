@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'My Company' => 'Read It',
-    'online library' => 'онлайн-бібліотека',
+    'My Company' => 'Час читати',
+    'online library' => 'онлайн бібліотека',
     'Home' => 'Головна',
     'Books' => 'Книги',
     'Authors' => 'Автори',

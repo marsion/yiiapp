@@ -16,6 +16,8 @@ $config = [
                 '/' => 'app/index',
                 '<action:(about|contact)>' => 'app/<action>',
                 '<controller:\w+>' => '<controller>/list',
+
+                '<controller:\w+>/<page:p\d+>' => '<controller>/list',
                 '<controller:\w+>/<id:\d+>' => '<controller>/single',
             ),
         ],
