@@ -1,10 +1,16 @@
 <?php
 use yii\helpers\Html;
+use yii\widgets\LinkPager;
 ?>
 
 <div class="authors_list">
 
-    <?php foreach($authors as $author) { ?>
+    <?php
+    echo LinkPager::widget([
+        'pagination' => $pages,
+    ]);
+
+    foreach($authors as $author) { ?>
     <div class="post">
         <div class="thumbnails">
             <a href="<?php echo Yii::$app->homeUrl.'authors/'.$author->id; ?>" class="thumb">
@@ -20,12 +26,12 @@ use yii\helpers\Html;
         </div>
         <div class="post_title">
             <h6>
-                <?php echo '('.$author->birthYear.' - '.$author->deathYear.')'; ?></td>
+                <?php echo '('.$author->birthYear.' - '.$author->deathYear.')'; ?>
             </h6>
         </div>
         <div class="post_title">
             <h6>
-                <?php echo $author->countryName; ?></td>
+                <?php echo $author->countryName; ?>
             </h6>
         </div>
         <div class="post_body">
@@ -34,6 +40,12 @@ use yii\helpers\Html;
         </div>
     </div>
     <?php } ?>
+    <?php
 
+    echo LinkPager::widget([
+        'pagination' => $pages,
+    ]);
+
+    ?>
 
 </div>

@@ -1,9 +1,16 @@
 <?php
 use yii\helpers\Html;
+use yii\widgets\LinkPager;
 ?>
 
 <div class="books_list">
+    <?php
 
+    echo LinkPager::widget([
+        'pagination' => $pages,
+    ]);
+
+    ?>
     <?php foreach($books as $book) { ?>
     <div class="post">
         <div class="thumbnails">
@@ -31,4 +38,11 @@ use yii\helpers\Html;
         </div>
     </div>
     <?php } ?>
+    <?php
+
+    echo LinkPager::widget([
+        'pagination' => $pages,
+    ]);
+
+    ?>
 </div>

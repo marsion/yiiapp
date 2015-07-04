@@ -51,8 +51,8 @@ AppAsset::register($this);
             <li><a href="#"><?php echo 'Top-100' ?></a></li>
             <li><a href="/books"><?php echo Yii::t('app', 'Books') ?></a></li>
             <li><a href="/authors"><?php echo Yii::t('app', 'Authors') ?></a></li>
-            <li><a href="/app/about"><?php echo Yii::t('app', 'About') ?></a></li>
-            <li><a href="/app/contact"><?php echo Yii::t('app', 'Contact us') ?></a></li>
+            <li><a href="/about"><?php echo Yii::t('app', 'About') ?></a></li>
+            <li><a href="/contact"><?php echo Yii::t('app', 'Contact us') ?></a></li>
         </ul>
 
         <div class="clearer">&nbsp;</div>

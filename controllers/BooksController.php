@@ -5,13 +5,19 @@ use \Yii;
 use \yii\db;
 use yii\web\Controller;
 use app\services\BookServices;
+use yii\data\Pagination;
 
 class BooksController extends Controller {
 
     public function actionList()
     {
-        $books = (new BookServices())->getAllBooks();
-        return $this->render('list', array('books' => $books));
+        $pages = new Pagination(['totalCount' => (new BookServices())->getBooksCount(),
+            'defaultPageSize' => 2,
+            'pageSize' => Yii::$app->getRequest()->getQueryParam('per')
+        ]);
+        $pages->pageSizeParam = false;
+        $books = (new BookServices())->getAllBooks($pages);
+        return $this->render('list', ['books' => $books, 'pages' => $pages]);
     }
 
     public function actionSingle($id)

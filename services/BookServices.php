@@ -8,13 +8,24 @@ use app\models\BookModel;
 
 class BookServices {
 
-    public function getAllBooks()
+    public function getBooksCount()
     {
-        $query = new Query();
-
-        $data = $query
+        $count = (new Query())
         ->select('*')
         ->from('tbl_books')
+        ->count();
+
+        return $count;
+    }
+
+    public function getAllBooks($pages)
+    {
+        $data = (new Query())
+        ->select('*')
+        ->from('tbl_books')
+        ->offset($pages->offset)
+        ->limit($pages->limit)
+        ->orderBy('title asc')
         ->all();
 
         foreach($data as $row)

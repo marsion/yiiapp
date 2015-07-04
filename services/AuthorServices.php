@@ -7,13 +7,24 @@ use app\models\AuthorModel;
 
 class AuthorServices {
 
-    public function getAllAuthors()
+    public function getAuthorsCount()
     {
-        $query = new Query();
-
-        $data = $query
+        $count = (new Query())
         ->select('*')
         ->from('tbl_authors')
+        ->count();
+
+        return $count;
+    }
+
+    public function getAllAuthors($pages)
+    {
+        $data = (new Query())
+        ->select('*')
+        ->from('tbl_authors')
+        ->offset($pages->offset)
+        ->limit($pages->limit)
+        ->orderBy('first_name asc')
         ->all();
 
         foreach($data as $row)
