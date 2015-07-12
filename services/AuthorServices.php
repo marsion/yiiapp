@@ -4,39 +4,59 @@ namespace app\services;
 
 use yii\db\Query;
 use app\models\AuthorModel;
+use app\dao\AuthorsDAO;
 
-class AuthorServices {
+class AuthorServices
+{
 
-    public function getAuthorsCount()
+    public function getAuthorsCount($sort, $ord, $country)
     {
-        $count = (new Query())
-        ->select('*')
-        ->from('tbl_authors')
-        ->count();
+        if ($sort == 'fname') {
+            ($ord == 'asc') ? $sortBy = 'first_name asc' : $sortBy = 'first_name desc';
+        } elseif ($sort == 'lname') {
+            ($ord == 'asc') ? $sortBy = 'last_name asc' : $sortBy = 'last_name desc';
+        } elseif ($sort == 'country') {
+            ($ord == 'asc') ? $sortBy = 'c.name asc' : $sortBy = 'c.name desc';
+        }else{
+            $sortBy = 'first_name asc';
+        }
 
-        return $count;
+        $country != null ? $countryname = "c.iso = '".$country."'" : $countryname = 1;
+
+        return (new Query())
+        ->select('*')
+        ->from('tbl_authors as a')
+        ->join('JOIN', 'tbl_countries as c', 'a.country = c.id')
+        ->where($countryname)
+        ->orderBy($sortBy)
+        ->count();
     }
 
-    public function getAllAuthors($pages)
+    public function getAllAuthors($pages, $sort, $ord, $country)
     {
+        if ($sort == 'fname') {
+            ($ord == 'asc') ? $sortBy = 'first_name asc' : $sortBy = 'first_name desc';
+        } elseif ($sort == 'lname') {
+            ($ord == 'asc') ? $sortBy = 'last_name asc' : $sortBy = 'last_name desc';
+        } elseif ($sort == 'country') {
+            ($ord == 'asc') ? $sortBy = 'c.name asc' : $sortBy = 'c.name desc';
+        }else{
+            $sortBy = 'first_name asc';
+        }
+
+        $country != null ? $countryname = "c.iso = '".$country."'" : $countryname = 1;
+
         $data = (new Query())
         ->select('*')
-        ->from('tbl_authors')
+        ->from('tbl_authors as a')
+        ->join('JOIN', 'tbl_countries as c', 'a.country = c.id')
+        ->where($countryname)
         ->offset($pages->offset)
         ->limit($pages->limit)
-        ->orderBy('first_name asc')
+        ->orderBy($sortBy)
         ->all();
 
-        foreach($data as $row)
-        {
-            $dataCountry = (new Query())
-            ->select('*')
-            ->from('tbl_countries')
-            ->where('id = :country')
-            ->addParams([':country' => $row['country']])
-            ->limit(1)
-            ->one();
-
+        foreach ($data as $row) {
             $author = new AuthorModel();
             $author->id = $row['id'];
             $author->firstName = $row['first_name'];
@@ -44,8 +64,9 @@ class AuthorServices {
             $author->birthYear = $row['birth_year'];
             $author->deathYear = $row['death_year'];
             $author->countryId = $row['country'];
-            $author->countryName = $dataCountry['name'];
-            $author->bio = mb_substr($row['bio'],0,mb_strrpos(mb_substr($row['bio'],0,500,'utf-8'),' ','utf-8'),'utf-8').' ...';
+            $author->countryName = $row['name'];
+            $author->bio = mb_substr($row['bio'], 0, mb_strrpos(mb_substr($row['bio'],
+                    0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
 
             $authors[] = $author;
         }
@@ -55,21 +76,8 @@ class AuthorServices {
 
     public function getAuthorByID($id)
     {
-        $data = (new Query())
-            ->select('*')
-            ->from('tbl_authors')
-            ->where('id = :id')
-            ->addParams([':id' => $id])
-            ->limit(1)
-            ->one();
-
-        $dataCountry = (new Query())
-            ->select('*')
-            ->from('tbl_countries')
-            ->where('id = :country')
-            ->addParams([':country' => $data['country']])
-            ->limit(1)
-            ->one();
+        $data = self::dao()->getRowById($id);
+        $country = self::countryServices()->getCountryNameById($data['country']);
 
         $author = new AuthorModel();
         $author->id = $data['id'];
@@ -78,10 +86,21 @@ class AuthorServices {
         $author->birthYear = $data['birth_year'];
         $author->deathYear = $data['death_year'];
         $author->countryId = $data['country'];
-        $author->countryName = $dataCountry['name'];
+        $author->countryName = $country;
         $author->bio = $data['bio'];
 
         return $author;
     }
+
+    protected function dao()
+    {
+        return new AuthorsDAO();
+    }
+
+    protected function countryServices()
+    {
+        return new CountryServices();
+    }
 }
+
 ?>

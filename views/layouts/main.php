@@ -28,7 +28,12 @@ AppAsset::register($this);
 
         <div id="toplinks">
             <div id="toplinks_inner">
-                <a href="#">Вхід</a> | <a href="#">Реєстрація</a> | <a href="#">FAQ</a></a>
+                <?php
+                    echo Yii::$app->user->isGuest ?
+                        '<a href="/login">Вхід</a> |' :
+                        '<a href="/logout">Вихід ('.Yii::$app->user->identity->getId().')</a> |';
+                ?>
+                <a href="#">FAQ</a></a>
             </div>
         </div>
         <div class="clearer">&nbsp;</div>
