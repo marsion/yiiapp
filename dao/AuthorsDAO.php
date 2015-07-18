@@ -9,7 +9,7 @@ class AuthorsDAO
     protected function get() {
         return (new Query())
         ->select('*')
-        ->from('tbl_authors');
+        ->from('tbl_authors as a');
     }
 
     public function getAllRows()
@@ -21,8 +21,9 @@ class AuthorsDAO
     public function getRowById($id)
     {
         return self::get()
-        ->where('id = :id')
-        ->addParams([':id' => $id])
+        ->join('LEFT JOIN', 'tbl_img_authors as aimg', 'a.author_id = aimg.author_id')
+        ->where('a.author_id = :author_id')
+        ->addParams([':author_id' => $id])
         ->limit(1)
         ->one();
     }
@@ -31,6 +32,17 @@ class AuthorsDAO
     {
         return self::get()
         ->count();
+    }
+
+    public function findFilterOptionsCountries()
+    {
+        return (new Query())
+            ->select('c.iso AS value, c.name AS text')
+            ->from('tbl_authors AS a')
+            ->join('JOIN', 'tbl_countries AS c', 'a.country = c.id')
+            ->groupBy('value')
+            ->orderBy('text')
+            ->all();
     }
 }
 

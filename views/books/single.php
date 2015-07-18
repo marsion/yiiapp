@@ -1,12 +1,14 @@
 <?php
-use yii\helpers\Html;
+$this->title = $book->title;
+$this->params['breadcrumbs'][] = ['label' => 'Книги', 'url' => [Yii::$app->homeUrl.'/books']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="books_single">
     <div class="post">
         <div class="thumbnails">
             <a class="thumb">
-                <img src="../css/img/sample-thumbnail.jpg" width="220" height="300" alt="" />
+                <img src="../css/images/books/<?php echo $book->img; ?>" alt="" />
             </a>
         </div>
         <div class="post_title">
@@ -16,9 +18,11 @@ use yii\helpers\Html;
         </div>
         <div class="post_title">
             <h5>
-                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authorId; ?>">
-                    <?php echo $book->authorFirstName.' '.$book->authorLastName; ?>
-                </a>
+                <?php for($i = 0; $i < count($book->authors); $i++) { ?>
+                    <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authors[$i]['author_id']; ?>">
+                        <?php echo $book->authors[$i]['first_name']." ".$book->authors[$i]['last_name']; ?>
+                    </a>
+                <?php if((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', '; } ?>
             </h5>
         </div>
         <div class="post_body">

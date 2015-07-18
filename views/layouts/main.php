@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use app\helpers\MyBreadcrumbs;
 use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
@@ -17,7 +18,8 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) . Yii::t('app', 'My Company') . ' - '
+    <title><?= isset($this->title) ? Html::encode($this->title).' - ' : Html::encode($this->title);
+        echo  Yii::t('app', 'My Company') . ' - '
         . Yii::t('app', 'online library')?></title>
     <?php $this->head() ?>
 </head>
@@ -73,7 +75,7 @@ AppAsset::register($this);
                 <div id="main_content">
                     <!-- ---------------------------- -->
                     <div>
-                        <?= Breadcrumbs::widget([
+                        <?= MyBreadcrumbs::widget([
                             'homeLink' => [
                                 'label' => Yii::t('yii', 'Home'),
                                 'url' => Yii::$app->homeUrl,

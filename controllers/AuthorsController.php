@@ -10,11 +10,12 @@ use Yii;
 
 class AuthorsController extends Controller {
 
-    public function actionList($sort = null, $ord =null, $country =null, $per =null)
+    public function actionList($sort = null, $ord = null, $c = null, $per = null)
     {
-        $pages = self::paginate($sort, $ord, $country, $per);
-        $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $country);
-        return $this->render('list', ['authors' => $authorModels, 'pages' => $pages]);
+        $pages = self::paginate($sort, $ord, $c, $per);
+        $countryOptions = self::services()->getFilterOptionsCountries();
+        $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $c);
+        return $this->render('list', ['authors' => $authorModels, 'pages' => $pages, 'countryOptions' => $countryOptions]);
     }
 
     public function actionSingle($id)
@@ -30,7 +31,7 @@ class AuthorsController extends Controller {
     protected function paginate($sort, $ord, $country, $per){
         $pagination = new Pagination(['totalCount' => self::services()->getAuthorsCount($sort, $ord, $country),
             'pageSize' => $per,
-            'defaultPageSize' => 2,
+            'defaultPageSize' => 10,
         ]);
         $pagination->pageSizeParam = false;
         return $pagination;
