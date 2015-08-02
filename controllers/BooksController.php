@@ -6,6 +6,7 @@ use \yii\db;
 use yii\web\Controller;
 use app\services\BookServices;
 use yii\data\Pagination;
+use yii\web\NotFoundHttpException;
 
 class BooksController extends Controller {
 
@@ -13,24 +14,31 @@ class BooksController extends Controller {
     {
         $pages = self::paginate($sort, $ord, $c, $per);
         $countryOptions = self::services()->getFilterOptionsCountries();
-        $books = (new BookServices())->getAllBooks($pages, $sort, $ord, $c);
-        return $this->render('list', ['books' => $books, 'pages' => $pages, 'countryOptions' => $countryOptions]);
+
+        if(($books = self::services()->getAllBooks($pages, $sort, $ord, $c)) != null) {
+            return $this->render('list', ['books' => $books, 'pages' => $pages, 'countryOptions' => $countryOptions]);
+        } else {
+            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
+        }
     }
 
     public function actionSingle($id)
     {
-        $book = (new BookServices())->getBookByID($id);
-        return $this->render('single', array('book' => $book));
+        if(($book = self::services()->getBookByID($id)) != null) {
+            return $this->render('single', array('book' => $book));
+        }else {
+            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
+        }
     }
 
     protected function services(){
         return new BookServices();
     }
 
-    protected function paginate($sort, $ord, $country, $per){
-        $pagination = new Pagination(['totalCount' => self::services()->getBooksCount($sort, $ord, $country),
+    protected function paginate($country, $per){
+        $pagination = new Pagination(['totalCount' => self::services()->getBooksCountByCountry($country),
             'pageSize' => $per,
-            'defaultPageSize' => 10,
+            'defaultPageSize' => 18,
         ]);
         $pagination->pageSizeParam = false;
         return $pagination;

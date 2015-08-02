@@ -9,7 +9,7 @@ $sort = !empty( $_GET['sort'] ) ? $_GET['sort'] : 'lname';
 $ord = !empty( $_GET['ord'] ) ? $_GET['ord'] : 'asc';
 $c = !empty( $_GET['c'] ) ? $_GET['c'] : '';
 $sec = !empty( $_GET['sec'] ) ? $_GET['sec'] : '';
-$per = !empty( $_GET['per'] ) ? $_GET['per'] : '18';
+$per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
 
 ?>
 
@@ -38,9 +38,9 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '18';
                 <div class="orderby-item">
                     <div class="textHelper">показати: </div>
                     <select name="per" onchange="this.form.submit()">
-                        <option value="18" <?php echo $per == '18' ? 'selected' : ''; ?>>18</option>
-                        <option value="36" <?php echo $per == '36' ? 'selected' : ''; ?>>36</option>
-                        <option value="54" <?php echo $per == '54' ? 'selected' : ''; ?>>54</option>
+                        <option value="10" <?php echo $per == '10' ? 'selected' : ''; ?>>10</option>
+                        <option value="20" <?php echo $per == '20' ? 'selected' : ''; ?>>20</option>
+                        <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                     </select>
                 </div>
             </div>
@@ -82,7 +82,7 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '18';
         <div class="item">
             <div class="itemImg">
                 <a href="<?php echo Yii::$app->homeUrl.'authors/'.$author->id; ?>" class="img">
-                    <img src="<?php echo Yii::$app->request->baseUrl; ?>/css/images/authors/<?php echo $author->img; ?>" alt="" width="130" height="195"/>
+                    <img src="<?php echo Yii::$app->request->baseUrl; ?>/css/images/authors/<?php echo $author->img; ?>" alt="" />
                 </a>
 
             </div>

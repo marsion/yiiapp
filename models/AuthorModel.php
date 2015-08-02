@@ -9,6 +9,7 @@ class AuthorModel extends Model {
     public $id;
     public $firstName;
     public $lastName;
+    public $fullName;
     public $originalFirstName;
     public $originalLastName;
     public $birthYear;
@@ -17,5 +18,6 @@ class AuthorModel extends Model {
     public $countryName;
     public $bio;
     public $img;
+    public $rating;
 }
 ?>

@@ -17,6 +17,7 @@ $config = [
                 '<action:(about|contact|login|logout)>' => 'app/<action>',
                 '<controller:\w+>' => '<controller>/list',
                 '<controller:\w+>/<id:\d+>' => '<controller>/single',
+                '<controller:\w+>/<id:\d+>/<action:books>' => '<controller>/books',
             ),
         ],
         'request' => [

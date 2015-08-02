@@ -9,7 +9,7 @@ $sort = !empty( $_GET['sort'] ) ? $_GET['sort'] : 'fname';
 $ord = !empty( $_GET['ord'] ) ? $_GET['ord'] : 'asc';
 $c = !empty( $_GET['c'] ) ? $_GET['c'] : '';
 $sec = !empty( $_GET['sec'] ) ? $_GET['sec'] : '';
-$per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
+$per = !empty( $_GET['per'] ) ? $_GET['per'] : '18';
 
 ?>
 
@@ -37,9 +37,9 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
                 <div class="orderby-item">
                     <div class="textHelper">показати: </div>
                     <select name="per" onchange="this.form.submit()">
-                        <option value="10" <?php echo $per == '10' ? 'selected' : ''; ?>>10</option>
-                        <option value="20" <?php echo $per == '20' ? 'selected' : ''; ?>>20</option>
-                        <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
+                        <option value="18" <?php echo $per == '18' ? 'selected' : ''; ?>>18</option>
+                        <option value="36" <?php echo $per == '36' ? 'selected' : ''; ?>>36</option>
+                        <option value="54" <?php echo $per == '54' ? 'selected' : ''; ?>>54</option>
                     </select>
                 </div>
             </div>
@@ -75,23 +75,12 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
     </div>
 
 
-    <div class="pagination-pan">
-        <?php
-
-        echo CatalogLinkPager::widget([
-            'pagination' => $pages,
-        ]);
-
-        ?>
-    </div>
-
-
     <div class="catalog">
     <?php foreach($books as $book) { ?>
     <div class="item">
         <div class="itemImg">
             <a href="<?php echo Yii::$app->homeUrl.'books/'.$book->id; ?>" class="img" >
-                <img src="../css/images/books/<?php echo $book->img; ?>" alt="" />
+                <img src="<?php echo Yii::$app->request->baseUrl; ?>/css/images/books/<?php echo $book->img; ?>" alt="" width="130" height="195"/>
             </a>
         </div>
         <div class="bookTitle">
@@ -101,8 +90,8 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
         </div>
         <div class="bookAuthor">
             <?php for($i = 0; $i < count($book->authors); $i++) { ?>
-                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authors[$i]['author_id']; ?>">
-                    <?php echo $book->authors[$i]['first_name']." ".$book->authors[$i]['last_name']; ?>
+                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authors[$i]->id; ?>">
+                    <?php echo $book->authors[$i]->firstName." ".$book->authors[$i]->lastName; ?>
                 </a>
             <?php if((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', '; } ?>
         </div>

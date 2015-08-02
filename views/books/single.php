@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="post">
         <div class="thumbnails">
             <a class="thumb">
-                <img src="../css/images/books/<?php echo $book->img; ?>" alt="" />
+                <img src="<?php echo Yii::$app->request->baseUrl; ?>/css/images/books/<?php echo $book->img; ?>" alt="" />
             </a>
         </div>
         <div class="post_title">
@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="post_title">
             <h5>
                 <?php for($i = 0; $i < count($book->authors); $i++) { ?>
-                    <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authors[$i]['author_id']; ?>">
-                        <?php echo $book->authors[$i]['first_name']." ".$book->authors[$i]['last_name']; ?>
+                    <a href="<?php echo Yii::$app->homeUrl.'authors/'.$book->authors[$i]->id; ?>">
+                        <?php echo $book->authors[$i]->firstName." ".$book->authors[$i]->lastName; ?>
                     </a>
                 <?php if((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', '; } ?>
             </h5>

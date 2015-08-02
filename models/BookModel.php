@@ -8,10 +8,8 @@ class BookModel extends Model {
 
     public $id;
     public $title;
-    public $authors;
-//    public $authorFirstName;
-//    public $authorLastName;
     public $description;
     public $img;
+    public $authors;
 }
 ?>

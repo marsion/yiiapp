@@ -59,9 +59,7 @@ blockquote {
     margin: 0.6em 0 1.6em;
     padding: 0.8em 1em 0.2em 46px;
 }
-.bold {
-    font-weight: bold;
-}
+
 
 /* 
    Tables
@@ -69,7 +67,7 @@ blockquote {
 
 table.data_table {
     border: 1px solid #CCB;
-
+    margin-bottom: 2em;
     width: 100%;
 }
 table.data_table th {
@@ -79,7 +77,7 @@ table.data_table th {
     text-align: left;
 }
 table.data_table tr {border-bottom: 1px solid #DDD;}
-table.data_table td, table th {padding: 8px;}
+table.data_table td, table th {padding: 10px;}
 table.data_table td {
     background: url('img/grain_light.gif');
     border: 1px solid #DDC;
@@ -398,7 +396,7 @@ img.right {margin: 0 0 15px 12px;}
     margin-left:3px;
     margin-right:3px;
     height: auto;
-    width:138px;
+    /*width:168px;*/
 
     text-align: center;
     display: inline-block;
@@ -440,52 +438,9 @@ img.right {margin: 0 0 15px 12px;}
 }
 .itemImg a.img:hover {background: #C6C6BA;}
 .itemImg .img img {display: block;}
-
 /*
-     product card 
---------------------------------------------*/
-.product-card {
-    margin:30px 0;
-}
-.product-card-box {
-    display: inline-block;
-    vertical-align: top;
-}
-.product-card-img {
-    width:168px;
-
-    margin-right: 20px;
-    margin-bottom: 20px;
-}
-.product-card-img a.img {
-    background: url('img/grain_dark.gif');
-    display: block;
-    padding: 4px;
-}
-.product-card-title {
-    font: normal 2em Georgia,sans-serif;
-}
-.product-card-other-books{
-    font-size: 14px;
-    margin:20px 0;
-    text-align: center;
-}
-.product-card-other-books a {
-    color:#C40;
-}
-.product-card-details{
-    width:690px;
-    margin: 20px 0;
-}
-.product-card-details .author-bio {
-    height:300px;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-.product-card-info-column {
-    width: 90px;
-    font-weight: bold;
-}
+   Catalog items
+------------------------------------------------------------------- */
 
 /* 
    Posts 
@@ -732,4 +687,14 @@ ul.catalog-pagination li a, ul.catalog-pagination li span {
     vertical-align: middle;
     padding:10px;
 }
-
+/*
+product card-------------------------------------------------*/
+.product-card {
+    margin:30px 0;
+}
+.product-img {
+    float: left;
+    margin: 0 20px 20px 0;
+}
+.product-title {}
+.product-data {}

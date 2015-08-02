@@ -142,12 +142,12 @@ AppAsset::register($this);
 
                             <div class="thumbnails">
 
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
-                                <a href="#" class="thumb"><img src="../css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
+                                <a href="#" class="thumb"><img src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75" height="75" alt="" /></a>
 
                                 <div class="clearer">&nbsp;</div>
 
