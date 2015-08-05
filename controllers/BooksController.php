@@ -6,7 +6,6 @@ use \yii\db;
 use yii\web\Controller;
 use app\services\BookServices;
 use yii\data\Pagination;
-use yii\web\NotFoundHttpException;
 
 class BooksController extends Controller {
 
@@ -15,20 +14,14 @@ class BooksController extends Controller {
         $pages = self::paginate($sort, $ord, $c, $per);
         $countryOptions = self::services()->getFilterOptionsCountries();
 
-        if(($books = self::services()->getAllBooks($pages, $sort, $ord, $c)) != null) {
-            return $this->render('list', ['books' => $books, 'pages' => $pages, 'countryOptions' => $countryOptions]);
-        } else {
-            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
-        }
+        $books = self::services()->getAllBooks($pages, $sort, $ord, $c);
+        return $this->render('list', ['books' => $books, 'pages' => $pages, 'countryOptions' => $countryOptions]);
     }
 
     public function actionSingle($id)
     {
-        if(($book = self::services()->getBookByID($id)) != null) {
-            return $this->render('single', array('book' => $book));
-        }else {
-            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
-        }
+        $book = self::services()->getBookByID($id);
+        return $this->render('single', array('book' => $book));
     }
 
     protected function services(){

@@ -47,7 +47,7 @@ class AuthorServices
 
             return $authors;
         } else {
-            return null;
+            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
         }
     }
 
@@ -70,7 +70,7 @@ class AuthorServices
 
             return $author;
         } else {
-            return null;
+            throw new NotFoundHttpException('Sorry, but there is no author with such ID!');
         }
     }
 
@@ -98,7 +98,7 @@ class AuthorServices
 
             return $authors;
         } else {
-            return null;
+            return array();
         }
     }
 

@@ -2,10 +2,10 @@
 
 namespace app\services;
 
-use yii\db\Query;
 use app\models;
 use app\models\BookModel;
 use app\dao\BooksDAO;
+use yii\web\NotFoundHttpException;
 
 class BookServices {
 
@@ -41,7 +41,7 @@ class BookServices {
             }
             return $books;
         } else {
-            return null;
+            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
         }
     }
 
@@ -59,7 +59,7 @@ class BookServices {
 
             return $book;
         } else {
-            return null;
+            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
         }
     }
 
@@ -81,7 +81,7 @@ class BookServices {
             }
             return $books;
         } else {
-            return null;
+            return array();
         }
     }
 

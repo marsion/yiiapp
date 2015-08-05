@@ -732,4 +732,11 @@ ul.catalog-pagination li a, ul.catalog-pagination li span {
     vertical-align: middle;
     padding:10px;
 }
-
+/*
+--------- empty-search-results --------------------*/
+.empty-search-results {
+    margin: 30px 0 130px;
+    padding: 30px;
+    font-size: 1.2rem;
+    text-align: center;
+}

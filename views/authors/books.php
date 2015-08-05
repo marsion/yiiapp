@@ -2,10 +2,10 @@
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
 
-$this->title = 'Всі книги '.$authorFullName;
+$this->title = $authorFullName.' - всі книги ';
 $this->params['breadcrumbs'][] = ['label' => 'Автори', 'url' => ['/authors']];
 $this->params['breadcrumbs'][] = ['label' => $authorFullName,
-    'url' => ['/authors/'.$books[0]->authors[0]->id]];
+    'url' => ['/authors/'.$authorId]];
 $this->params['breadcrumbs'][] = 'Всі книги';
 
 $sort = !empty( $_GET['sort'] ) ? $_GET['sort'] : 'fname';
@@ -15,6 +15,7 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
 ?>
 
 <div class="books_list">
+    <?php if(count($books) > 0) { ?>
     <div class="filt-sort-pan">
         <form action="books" method="get">
 
@@ -84,4 +85,9 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '10';
 
         ?>
     </div>
+    <?php } else { ?>
+        <div class="empty-search-results">
+            На жаль, жодної книги даного автора не знайдено.
+        </div>
+    <?php } ?>
 </div>
