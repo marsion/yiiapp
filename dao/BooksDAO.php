@@ -32,7 +32,7 @@ class BooksDAO
         return (new Query())
             ->select('*')
             ->from('tbl_books as b')
-            ->where('id = :id')
+            ->where('book_id = :id')
             ->addParams([':id' => $id])
             ->limit(1)
             ->one();
@@ -43,13 +43,13 @@ class BooksDAO
         if ($sort == 'title') {
             ($ord == 'asc') ? $sortBy = 'title ASC' : $sortBy = 'title DESC';
         } else {
-            $sortBy = 'title ASC';
+            $sortBy = 'title DESC';
         }
 
         return (new Query())
             ->select('*')
             ->from('tbl_books as b')
-            ->join('JOIN', 'tbl_ab as ab', 'b.id = ab.book_id')
+            ->join('JOIN', 'tbl_book_author as ab', 'b.book_id = ab.book_id')
             ->join('JOIN', 'tbl_authors as a', 'ab.author_id = a.author_id')
             ->where('ab.author_id = :id')
             ->addParams([':id' => $id])
@@ -73,7 +73,7 @@ class BooksDAO
     {
         return (new Query())
             ->select('book_id')
-            ->from('tbl_ab')
+            ->from('tbl_book_author')
             ->where('author_id = :id')
             ->addParams([':id' => $id])
             ->distinct()
@@ -84,7 +84,7 @@ class BooksDAO
     {
         return (new Query())
             ->select('c.iso AS value, c.name AS text')
-            ->from('tbl_ab AS ab')
+            ->from('tbl_book_author AS ab')
             ->join('JOIN', 'tbl_authors AS a', 'ab.author_id = a.author_id')
             ->join('JOIN', 'tbl_countries AS c', 'a.country = c.id')
             ->groupBy('value')

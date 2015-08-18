@@ -1,0 +1,222 @@
+<?php
+ini_set('memory_limit', '2048M');
+$link = mysqli_connect("localhost", "root", "admin", "yiiapp3");
+if ($link === false) {die('ERROR: Could not connect. ' . mysqli_connect_error());}
+mysqli_set_charset($link, 'utf8');
+//----------------------------------------
+
+$allBooks = include('part_of_all_books.inc');
+//---------------------------------------------------------------------
+
+    foreach($allBooks as $book) {
+
+        if (isset($book['Автор']) && !in_array($book['Автор'], $allAuthors)) {
+            $allAuthors[] = $book['Автор'];
+        }
+
+        if (isset($book['Жанр']) && !in_array($book['Жанр'], $allGenres)) {
+            $allGenres[] = $book['Жанр'];
+        }
+
+        if (isset($book['Город печати']) && !in_array($book['Город печати'], $allCities)) {
+            $allCities[] = $book['Город печати'];
+        }
+
+        if (isset($book['Переводчик']) && !in_array($book['Переводчик'], $allTranslators)) {
+            $allTranslators[] = $book['Переводчик'];
+        }
+
+        if (isset($book['Серии']) && !in_array($book['Серии'], $allSeries)) {
+            $allSeries[] = $book['Серии'];
+        }
+    }
+
+    echo 'finished preparing usual arrays.'.'<br>';
+
+function prepareDBAuthors($link, $allAuthors)
+{
+    foreach ($allAuthors as $author) {
+        $authorSlash = mysqli_real_escape_string($link, $author);
+
+        $sql = "INSERT INTO `yiiapp3`.`tbl_authors` (`author_id`, `name`, `birth_year`, `death_year`, `country`, "
+            ." `bio`, `rating`) VALUES ('', '$authorSlash', '', '', '0', '', '1');";
+        if (mysqli_query($link, $sql)) {
+            $id = mysqli_insert_id($link);
+            $dbAuthors[$author] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) . '<br>';
+        }
+    }
+    echo 'prepared db authors'.'<br>';
+    return $dbAuthors;
+}
+
+function prepareDBGenres($link, $allGenres)
+{
+    foreach ($allGenres as $genre) {
+        $genreSlash = mysqli_real_escape_string($link, $genre);
+
+        $sql = "INSERT INTO `yiiapp3`.`tbl_genres` (`genre_id`, `name`) VALUES ('', '$genreSlash')";
+        if (mysqli_query($link, $sql)) {
+            $id = mysqli_insert_id($link);
+            $dbGenres[$genre] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) . '<br>';
+        }
+    }
+    echo 'prepared db genres'.'<br>';
+    return $dbGenres;
+}
+
+function prepareDBCities($link, $allCities)
+{
+    foreach ($allCities as $city) {
+        $citySlash = mysqli_real_escape_string($link, $city);
+
+        $sql = "INSERT INTO `yiiapp3`.`tbl_cities` (`city_id`, `name`) VALUES ('', '$citySlash')";
+        if (mysqli_query($link, $sql)) {
+            $id = mysqli_insert_id($link);
+            $dbCities[$city] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) . '<br>';
+        }
+    }
+    echo 'prepared db cities'.'<br>';
+    return $dbCities;
+}
+
+function prepareDBTranslators($link, $allTranslators)
+{
+    foreach ($allTranslators as $translator) {
+        $translatorSlash = mysqli_real_escape_string($link, $translator);
+
+        $sql = "INSERT INTO `yiiapp3`.`tbl_translators` (`trans_id`, `name`) VALUES ('', "
+            ." '$translatorSlash')";
+        if (mysqli_query($link, $sql)) {
+            $id = mysqli_insert_id($link);
+            $dbTranslators[$translator] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) . '<br>';
+        }
+    }
+    echo 'prepared db translators'.'<br>';
+    return $dbTranslators;
+}
+
+function prepareDBSeries($link, $allSeries)
+{
+    foreach ($allSeries as $seria) {
+        $seriaSlash = mysqli_real_escape_string($link, $seria);
+
+        $sql = "INSERT INTO `yiiapp3`.`tbl_series` (`series_id`, `name`) VALUES ('', '$seriaSlash')";
+        if (mysqli_query($link, $sql)) {
+            $id = mysqli_insert_id($link);
+            $dbSeries[$seria] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) . '<br>';
+        }
+    }
+    echo 'prepared db series'.'<br>';
+    return $dbSeries;
+}
+
+
+
+////=================================================
+
+
+
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+$dbAuthors = prepareDBAuthors($link, $allAuthors);
+$dbGenres = prepareDBGenres($link, $allGenres);
+$dbCities = prepareDBCities($link, $allCities);
+$dbTranslators = prepareDBTranslators($link, $allTranslators);
+$dbSeries = prepareDBSeries($link, $allSeries);
+$allPublishingHouses = array();
+//--------------------------------
+
+
+
+//--------
+foreach($allBooks as $book) {
+    if (isset($book['Издатель']) && !in_array($book['Издатель'], $allPublishingHouses)) {
+        $publishingHouseSlash = mysqli_real_escape_string($link, $book['Издатель']);
+        $allPublishingHouses[] = $book['Издатель'];
+
+        $bookcity = $book['Город печати'];
+        $bookph = $book['Издатель'];
+
+        $sqlpubhouse = "INSERT INTO `yiiapp3`.`tbl_publishing_houses` (`ph_id`, `name`, `city`)"
+            . " VALUES ('', '$publishingHouseSlash', '$dbCities[$bookcity]')";
+        if (mysqli_query($link, $sqlpubhouse)) {
+            $id = mysqli_insert_id($link);
+            $dbPublishingHouses[$bookph] = $id;
+        } else {
+            echo "ERROR: Could not able to execute $sqlpubhouse. " . mysqli_error($link) . '<br>';
+        }
+
+    }
+}
+//-----------
+
+//----------------------------------
+    foreach($allBooks as $book) {
+
+        $name = mysqli_real_escape_string($link, $book['Name']);
+        $pages = mysqli_real_escape_string($link, $book['Количество страниц']);
+        $isbn = mysqli_real_escape_string($link, $book['ISBN']);
+        $lang = mysqli_real_escape_string($link, $book['Язык книги']);
+        $origlang = mysqli_real_escape_string($link, $book['Язык оригинальной книги']);
+        $year = mysqli_real_escape_string($link, $book['Год печати']);
+        $cover = mysqli_real_escape_string($link, $book['Cover']);
+
+        $bookpubl = $book['Издатель'];
+        $bookser = $book['Серии'];
+        $booktrans = $book['Переводчик'];
+
+        isset($book['Издатель']) ? $ph_id = $dbPublishingHouses[$bookpubl] : $ph_id = 0;
+        isset($book['Серии']) ? $series_id = $dbSeries[$bookser] : $series_id = 0;
+        isset($book['Переводчик']) ? $trans_id = $dbTranslators[$booktrans] : $trans_id = 0;
+
+        $sqlbook = "INSERT INTO `yiiapp3`.`tbl_books` (`book_id`, `title`, `pages`, `ph_id`, `series_id`, `isbn`, "
+            ." `description`, `lang`, `orig_lang`, `year`, `trans_id`) "
+  ." VALUES ('', '$name', '$pages', '$ph_id', '$series_id', '$isbn', '', '$lang', '$origlang', '$year', '$trans_id');";
+        if (mysqli_query($link, $sqlbook)) {
+            $id = mysqli_insert_id($link);
+            //-------------------
+            $authorname = $book['Автор'];
+            $sqlbookauthor = "INSERT INTO `yiiapp3`.`tbl_book_author` (`ab_id`, `book_id`, `author_id`) "
+                ." VALUES ('', '$id', '$dbAuthors[$authorname]');";
+            if (mysqli_query($link, $sqlbookauthor)) {
+
+            } else {
+                echo "ERROR: Could not able to execute $sqlbookauthor. " . mysqli_error($link) . '<br>';
+            }
+            //-------------------
+            $genrename = $book['Жанр'];
+            $sqlbookgenre = "INSERT INTO `yiiapp3`.`tbl_book_genre` (`bg_id`, `book_id`, `genre_id`) "
+                ." VALUES ('', '$id', '$dbGenres[$genrename]');";
+            if (mysqli_query($link, $sqlbookgenre)) {
+
+            } else {
+                echo "ERROR: Could not able to execute $sqlbookgenre. " . mysqli_error($link) . '<br>';
+            }
+            //-------------------
+            $sqlimg = "INSERT INTO `yiiapp3`.`tbl_img_books` (`img_b_id`, `book_id`, `src`) "
+                ." VALUES ('', '$id', '$cover');";
+            if (mysqli_query($link, $sqlimg)) {
+
+            } else {
+                echo "ERROR: Could not able to execute $sqlimg. " . mysqli_error($link) . '<br>';
+            }
+        } else {
+            echo "ERROR: Could not able to execute $sqlbook. " . mysqli_error($link) . '<br>';
+        }
+    }
+
+
+//----------------------------------------------------------------------
+echo '---DONE---';
+mysqli_close($link);
+?>

@@ -1,0 +1,36 @@
+<?php 
+$link = mysqli_connect("localhost", "root", "admin", "yiiapp2");
+ 
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
+mysqli_set_charset($link, "utf8");
+//---------------------------
+$var = include('part_of_all_books.inc');
+
+foreach($var as $v) {
+
+echo $v['Автор'].'<br>';
+echo $v['Название печатной книги'].'<br>';
+echo $v['Количество страниц'].'<br>';
+echo $v['Язык книги'].'<br>';
+echo $v['Язык оригинальной книги'].'<br>';
+echo $v['Переводчик'].'<br>';
+echo $v['ISBN'].'<br>';
+echo $v['Издатель'].'<br>';
+echo $v['Город печати'].'<br>';
+echo $v['Год печати'].'<br>';
+
+echo '-------------------'.'<br>';
+
+$sql = "INSERT INTO `yiiapp2`.`tbl_publishing_houses` (`ph_id`, `name`, `city`) VALUES ('', '{$v['Издатель']}', '{$v['Город печати']}');";
+if(mysqli_query($link, $sql)){
+    echo "Records added successfully.";
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link) .'<br>';
+}
+
+}
+mysqli_close($link);
+
+?>

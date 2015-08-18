@@ -658,6 +658,7 @@ filtering-sorting panel
     background-color: #f9f9f8;
     border:2px solid #e2e2d9;
     padding-right:15px;
+
 }
 select::-ms-expand {
     display: none;

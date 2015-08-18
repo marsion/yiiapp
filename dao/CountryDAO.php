@@ -37,6 +37,26 @@ class CountryDAO
         return self::get()
         ->count();
     }
+
+    public function findCountryRowByISO($iso)
+    {
+        return (new Query())
+        ->select('*')
+        ->from('tbl_countries')
+        ->where('iso = :iso')
+        ->addParams([':iso' => $iso])
+        ->limit(1)
+        ->one();
+    }
+
+    public function findFilterOptionsCountries()
+    {
+        return (new Query())
+            ->select('name AS text, iso AS value')
+            ->from('tbl_countries')
+            ->distinct()
+            ->all();
+    }
 }
 
 ?>

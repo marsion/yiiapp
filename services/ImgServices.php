@@ -17,7 +17,7 @@ class ImgServices
         if ($result) {
             return $result['src'];
         }
-        return 'no-image.png';
+        return '/css/images/authors/no-image.png';
     }
 
     public function getImageByBookId($id)
@@ -26,6 +26,6 @@ class ImgServices
         if ($result) {
             return $result['src'];
         }
-        return 'no-image.png';
+        return '/css/images/authors/no-image.png';
     }
 }

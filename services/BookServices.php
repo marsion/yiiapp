@@ -30,13 +30,13 @@ class BookServices {
 
             foreach ($data as $row) {
                 $book = new BookModel();
-                $book->id = $row['id'];
+                $book->id = $row['book_id'];
                 $book->title = $row['title'];
                 $book->description = mb_substr($row['description'], 0, mb_strrpos(mb_substr($row['description'],
                         0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
 
-                $book->authors = self::authorServices()->getAuthorsByBookID($row['id']);
-                $book->img = self::imgServices()->getImageByBookId($row['id']);
+                $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
+                $book->img = self::imgServices()->getImageByBookId($row['book_id']);
                 $books[] = $book;
             }
             return $books;
@@ -69,13 +69,13 @@ class BookServices {
             foreach ($data as $row) {
 
                 $book = new BookModel();
-                $book->id = $row['id'];
+                $book->id = $row['book_id'];
                 $book->title = $row['title'];
                 $book->description = mb_substr($row['description'], 0, mb_strrpos(mb_substr($row['description'],
                         0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
 
-                $book->authors = self::authorServices()->getAuthorsByBookID($row['id']);
-                $book->img = self::imgServices()->getImageByBookId($row['id']);
+                $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
+                $book->img = self::imgServices()->getImageByBookId($row['book_id']);
 
                 $books[] = $book;
             }

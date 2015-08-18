@@ -29,10 +29,7 @@ class AuthorServices
             foreach ($data as $row) {
                 $author = new AuthorModel();
                 $author->id = $row['author_id'];
-                $author->firstName = $row['first_name'];
-                $author->lastName = $row['last_name'];
-                $author->originalFirstName = $row['original_first_name'];
-                $author->originalLastName = $row['original_last_name'];
+                $author->fullName = $row['full_name'];
                 $author->birthYear = $row['birth_year'];
                 $author->deathYear = $row['death_year'];
                 $author->countryId = $row['country'];
@@ -47,7 +44,7 @@ class AuthorServices
 
             return $authors;
         } else {
-            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
+            return array();
         }
     }
 
@@ -56,10 +53,7 @@ class AuthorServices
         if($data = self::dao()->findAuthorById($id)) {
             $author = new AuthorModel();
             $author->id = $data['author_id'];
-            $author->firstName = $data['first_name'];
-            $author->lastName = $data['last_name'];
-            $author->originalFirstName = $data['original_first_name'];
-            $author->originalLastName = $data['original_last_name'];
+            $author->fullName = $data['full_name'];
             $author->birthYear = $data['birth_year'];
             $author->deathYear = $data['death_year'];
             $author->countryId = $data['country'];
@@ -79,10 +73,7 @@ class AuthorServices
             foreach ($data as $row) {
                 $author = new AuthorModel();
                 $author->id = $row['author_id'];
-                $author->firstName = $row['first_name'];
-                $author->lastName = $row['last_name'];
-                $author->originalFirstName = $row['original_first_name'];
-                $author->originalLastName = $row['original_last_name'];
+                $author->fullName = $row['full_name'];
                 $author->birthYear = $row['birth_year'];
                 $author->deathYear = $row['death_year'];
                 $author->countryId = $row['country'];
@@ -102,19 +93,19 @@ class AuthorServices
         }
     }
 
-    public function getAuthorFullNameByID ($id) {
-        $row = self::dao()->findAuthorFullNameByID($id);
-        return $row['full_name'];
+    public function getAuthorNameByID($id)
+    {
+        if($data = self::dao()->findAuthorById($id)) {
+            return $data['full_name'];
+        } else {
+            throw new NotFoundHttpException('Sorry, but there is no author with such ID!');
+        }
     }
 
-    public function getFilterOptionsCountries()
+    public function getAuthorsCountByCountryId($country)
     {
-        return self::dao()->findFilterOptionsCountries();
-    }
-
-    public function getAuthorsCountByCountry($country)
-    {
-        return self::dao()->findAuthorsCountByCountry($country);
+        $countryId = self::countryServices()->getCountryIdByISO($country);
+        return self::dao()->findAuthorsCountByCountryId($countryId);
     }
 }
 

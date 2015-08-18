@@ -4,34 +4,44 @@ namespace app\controllers;
 
 use yii\web\Controller;
 use Yii;
+use app\services\GenreServices;
 
 class AppController extends Controller
 {
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('index', ['genres' => $genres]);
     }
 
     public function actionAbout()
     {
-        return $this->render('about');
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('about', ['genres' => $genres]);
     }
 
     public function actionContact()
     {
-        return $this->render('contact');
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('contact', ['genres' => $genres]);
     }
 
     public function actionLogin()
     {
-        return $this->render('login');
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('login', ['genres' => $genres]);
     }
 
     public function actionLogout()
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+    protected function genreServices()
+    {
+        return new GenreServices();
     }
 }
 

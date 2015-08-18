@@ -21,5 +21,20 @@ class CountryServices {
     protected function dao(){
         return new CountryDAO();
     }
+
+    public function getCountryIdByISO($iso)
+    {
+        $row = self::dao()->findCountryRowByISO($iso);
+        return $row['id'];
+    }
+
+    public function getFilterOptionsCountries()
+    {
+        if($options = self::dao()->findFilterOptionsCountries()) {
+            return $options;
+        } else {
+            return array();
+        }
+    }
 }
 ?>

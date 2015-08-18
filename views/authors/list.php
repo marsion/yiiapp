@@ -1,108 +1,210 @@
 <?php
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
+use app\helpers\MyBreadcrumbs;
 
 $this->title = 'Автори';
 $this->params['breadcrumbs'][] = $this->title;
 
-$sort = !empty( $_GET['sort'] ) ? $_GET['sort'] : 'lname';
-$ord = !empty( $_GET['ord'] ) ? $_GET['ord'] : 'asc';
-$c = !empty( $_GET['c'] ) ? $_GET['c'] : '';
-$sec = !empty( $_GET['sec'] ) ? $_GET['sec'] : '';
-$per = !empty( $_GET['per'] ) ? $_GET['per'] : '18';
+$sort = !empty($_GET['sort']) ? $_GET['sort'] : 'name';
+$ord = !empty($_GET['ord']) ? $_GET['ord'] : 'asc';
+$c = !empty($_GET['c']) ? $_GET['c'] : '';
+$sec = !empty($_GET['sec']) ? $_GET['sec'] : '';
+$per = !empty($_GET['per']) ? $_GET['per'] : '60';
 
 ?>
 
-<div class="authors_list">
-    <div class="filt-sort-pan">
-        <form action="authors" method="get">
+<div class="left" id="main">
+    <div id="main_content">
+        <div>
+            <?= MyBreadcrumbs::widget([
+                'homeLink' => [
+                    'label' => Yii::t('yii', 'Home'),
+                    'url' => Yii::$app->homeUrl,
+                ],
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
 
-
-            <div class="orderby-pan">
-                <div class="orderby-item">
-                    <div class="textHelper">сортувати за: </div>
-                    <select name="sort" onchange="this.form.submit()">
-                        <option value="fname" <?php echo $sort == 'fname' ? 'selected' : ''; ?>>ім’ям</option>
-                        <option value="lname" <?php echo $sort == 'lname' ? 'selected' : ''; ?>>прізвищем</option>
-                        <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю</option>
-                        <option value="chron" <?php echo $sort == 'chron' ? 'selected' : ''; ?>>хронологією</option>
-                    </select>
-                </div>
-                <div class="orderby-item">
-                    <div class="textHelper">впорядкувати за: </div>
-                    <select name="ord" onchange="this.form.submit()">
-                        <option value="asc" <?php echo $ord == 'asc' ? 'selected' : ''; ?>>зростанням</option>
-                        <option value="desc" <?php echo $ord == 'desc' ? 'selected' : ''; ?>>спаданням</option>
-                    </select>
-                </div>
-                <div class="orderby-item">
-                    <div class="textHelper">показати: </div>
-                    <select name="per" onchange="this.form.submit()">
-                        <option value="18" <?php echo $per == '18' ? 'selected' : ''; ?>>18</option>
-                        <option value="36" <?php echo $per == '36' ? 'selected' : ''; ?>>36</option>
-                        <option value="54" <?php echo $per == '54' ? 'selected' : ''; ?>>54</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="filter-pan">
-                <div class="orderby-item">
-                    <div class="textHelper">секція: </div>
-                    <select name="sec" onchange="this.form.submit()">
-                        <option value="" <?php echo $sec == '' ? 'selected' : ''; ?>>--- секція ---</option>
-                        <option value="dyt" <?php echo $sec == 'dyt' ? 'selected' : ''; ?>>дитяча</option>
-                        <option value="hud" <?php echo $sec == 'hud' ? 'selected' : ''; ?>>художня</option>
-                        <option value="dov" <?php echo $sec == 'dov' ? 'selected' : ''; ?>>довідкова</option>
-                        <option value="nav" <?php echo $sec == 'nav' ? 'selected' : ''; ?>>навчальна</option>
-                        <option value="dil" <?php echo $sec == 'dil' ? 'selected' : ''; ?>>ділова</option>
-                        <option value="insh" <?php echo $sec == 'insh' ? 'selected' : ''; ?>>інша</option>
-                    </select>
-                </div>
-                <div class="orderby-item">
-                    <div class="textHelper">країна: </div>
-                    <select name="c" onchange="this.form.submit()">
-                        <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- країна ---</option>
-                        <?php foreach($countryOptions as $countryOpt) { ?>
-                            <option value="<?php echo $countryOpt['value']; ?>"
-                                <?php echo $c == $countryOpt['value'] ? 'selected' : ''; ?> >
-                                <?php echo $countryOpt['text']; ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                </div>
-            </div>
-
-
-        </form>
-    </div>
-
-    <div class="catalog">
-        <?php
-        foreach($authors as $author) { ?>
-        <div class="item">
-            <div class="itemImg">
-                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$author->id; ?>" class="img">
-                    <img src="<?php echo Yii::$app->request->baseUrl; ?>/css/images/authors/<?php echo $author->img; ?>" alt="" width="130" height="195"/>
-                </a>
-
-            </div>
-            <div class="authorName">
-                <a href="<?php echo Yii::$app->homeUrl.'authors/'.$author->id; ?>">
-                    <?php echo $author->firstName.' '.$author->lastName; ?>
-                </a>
-            </div>
         </div>
-        <?php } ?>
+        <div class="authors_list">
+
+            <div class="filt-sort-pan">
+                <form action="authors" method="get">
+
+
+                    <div class="orderby-pan">
+                        <div class="orderby-item">
+                            <div class="textHelper">сортувати за:</div>
+                            <select name="sort" onchange="this.form.submit()">
+                                <option value="name" <?php echo $sort == 'name' ? 'selected' : ''; ?>>ім’ям</option>
+                                <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю
+                                </option>
+                                <option value="chron" <?php echo $sort == 'chron' ? 'selected' : ''; ?>>хронологією
+                                </option>
+                            </select>
+                        </div>
+                        <div class="orderby-item">
+                            <div class="textHelper">впорядкувати за:</div>
+                            <select name="ord" onchange="this.form.submit()">
+                                <option value="asc" <?php echo $ord == 'asc' ? 'selected' : ''; ?>>зростанням</option>
+                                <option value="desc" <?php echo $ord == 'desc' ? 'selected' : ''; ?>>спаданням</option>
+                            </select>
+                        </div>
+                        <div class="orderby-item">
+                            <div class="textHelper">показати:</div>
+                            <select name="per" onchange="this.form.submit()">
+                                <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
+                                <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
+                                <option value="240" <?php echo $per == '240' ? 'selected' : ''; ?>>240</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-pan">
+                        <div class="orderby-item">
+                            <div class="textHelper">країна:</div>
+                            <select name="c" onchange="this.form.submit()">
+                                <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- країна ---</option>
+                                <?php if (count($countryOptions) > 0) { ?>
+                                    <?php foreach ($countryOptions as $countryOpt) { ?>
+                                        <option value="<?php echo $countryOpt['value']; ?>"
+                                            <?php echo $c == $countryOpt['value'] ? 'selected' : ''; ?> >
+                                            <?php echo $countryOpt['text']; ?>
+                                        </option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <?php if (count($authors) > 0) { ?>
+
+                <div class="catalog">
+                    <?php
+                    foreach ($authors as $author) { ?>
+                        <div class="item">
+                            <div class="itemImg">
+                                <a href="<?php echo Yii::$app->homeUrl . 'authors/' . $author->id; ?>" class="img">
+                                    <img src="<?php echo $author->img; ?>" alt="" width="130" height="195"/>
+                                </a>
+
+                            </div>
+                            <div class="authorName">
+                                <a href="<?php echo Yii::$app->homeUrl . 'authors/' . $author->id; ?>">
+                                    <?php echo $author->fullName; ?>
+                                </a>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+
+                <div class="pagination-pan">
+                    <?php
+
+                    echo CatalogLinkPager::widget([
+                        'pagination' => $pages,
+                    ]);
+
+                    ?>
+                </div>
+            <?php } else { ?>
+                <div class="empty-search-results">
+                    На жаль, жодного автора за заданими критеріями не знайдено.
+                </div>
+            <?php } ?>
+        </div>
     </div>
+</div>
 
-    <div class="pagination-pan">
-        <?php
+<div class="right" id="sidebar">
 
-        echo CatalogLinkPager::widget([
-            'pagination' => $pages,
-        ]);
+    <div id="sidebar_content">
 
-        ?>
+        <div class="box">
+
+            <div class="box_title">Категорії</div>
+            <?php if (count($genres) > 1) { ?>
+                <div class="box_content">
+                    <ul>
+                        <?php foreach ($genres as $genre) { ?>
+                            <li><a href="#"><?php echo $genre['text']; ?></a></li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            <?php } ?>
+        </div>
+
+        <div class="box">
+
+            <div class="box_title">Categories</div>
+
+            <div class="box_content">
+                <ul>
+                    <li><a href="http://templates.arcsin.se/category/website-templates/">Website Templates</a></li>
+                    <li><a href="http://templates.arcsin.se/category/wordpress-themes/">Wordpress Themes</a></li>
+                    <li><a href="http://templates.arcsin.se/professional-templates/">Professional Templates</a></li>
+                    <li><a href="http://templates.arcsin.se/category/blogger-templates/">Blogger Templates</a></li>
+                    <li><a href="http://templates.arcsin.se/category/joomla-templates/">Joomla Templates</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="box_title">Resources</div>
+
+            <div class="box_content">
+                <ul>
+                    <li><a href="http://templates.arcsin.se/">Arcsin Web Templates</a></li>
+                    <li><a href="http://www.google.com/" rel="nofollow">Google</a> - Web Search</li>
+                    <li><a href="http://www.w3schools.com/" rel="nofollow">W3Schools</a> - Online Web Tutorials</li>
+                    <li><a href="http://www.wordpress.org/" rel="nofollow">WordPress</a> - Blog Platform</li>
+                    <li><a href="http://cakephp.org/" rel="nofollow">CakePHP</a> - PHP Framework</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="box_title">Gallery</div>
+
+            <div class="box_content">
+
+                <div class="thumbnails">
+
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+                    <a href="#" class="thumb"><img
+                            src="<?php echo Yii::$app->request->baseUrl; ?>/css/img/sample-thumbnail.jpg" width="75"
+                            height="75" alt=""/></a>
+
+                    <div class="clearer">&nbsp;</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
