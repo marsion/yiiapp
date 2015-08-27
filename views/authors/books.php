@@ -3,15 +3,15 @@ use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
 use app\helpers\MyBreadcrumbs;
 
-$this->title = $authorName . ' - всі книги ';
+$this->title = $author->fullName . ' - всі книги ';
 $this->params['breadcrumbs'][] = ['label' => 'Автори', 'url' => ['/authors']];
-$this->params['breadcrumbs'][] = ['label' => $authorName,
-    'url' => ['/authors/' . $authorId]];
+$this->params['breadcrumbs'][] = ['label' => $author->fullName,
+    'url' => ['/authors/' . $author->id]];
 $this->params['breadcrumbs'][] = 'Всі книги';
 
 $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'name';
 $ord = !empty($_GET['ord']) ? $_GET['ord'] : 'asc';
-$per = !empty($_GET['per']) ? $_GET['per'] : '60';
+$per = !empty($_GET['per']) ? $_GET['per'] : '30';
 
 ?>
 <div class="left" id="main">
@@ -52,20 +52,26 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '60';
                             <div class="orderby-item">
                                 <div class="textHelper">показати:</div>
                                 <select name="per" onchange="this.form.submit()">
+                                    <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                                     <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
                                     <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
-                                    <option value="240" <?php echo $per == '240' ? 'selected' : ''; ?>>240</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="filter-pan">
-
+                            <div class="orderby-item">
+                                <div class="textHelper">країна: </div>
+                                <select name="c" onchange="this.form.submit()" disabled="disabled">
+                                    <option value=""><?php echo $author->countryName; ?></option>
+                                </select>
+                            </div>
                         </div>
 
                     </form>
                 </div>
 
+                <div class="content_separator"></div>
 
                 <div class="catalog">
                     <?php foreach ($books as $book) { ?>

@@ -20,7 +20,7 @@ class BooksDAO
         $country != null ? $countryName = "c.iso = '" . $country . "'" : $countryName = 1;
 
         return $data = (new Query())
-            ->select('*')
+            ->select('book_id, title')
             ->from('tbl_books as b')
             ->offset($pages->offset)
             ->limit($pages->limit)
@@ -43,7 +43,7 @@ class BooksDAO
         if ($sort == 'title') {
             ($ord == 'asc') ? $sortBy = 'title ASC' : $sortBy = 'title DESC';
         } else {
-            $sortBy = 'title DESC';
+            $sortBy = 'title ASC';
         }
 
         return (new Query())
@@ -80,15 +80,51 @@ class BooksDAO
             ->count();
     }
 
-    public function findFilterOptionsCountries()
+    public function findMostPopularBooksByAuthorID($id, $amount)
     {
         return (new Query())
-            ->select('c.iso AS value, c.name AS text')
-            ->from('tbl_book_author AS ab')
-            ->join('JOIN', 'tbl_authors AS a', 'ab.author_id = a.author_id')
-            ->join('JOIN', 'tbl_countries AS c', 'a.country = c.id')
-            ->groupBy('value')
-            ->orderBy('text')
+            ->select('b.book_id, title')
+            ->from('tbl_books as b')
+            ->join('JOIN', 'tbl_book_author as ab', 'b.book_id = ab.book_id')
+            ->where('ab.author_id = :id')
+            ->addParams([':id' => $id])
+            ->limit($amount)
+            ->orderBy('rating DESC')
             ->all();
+    }
+
+    public function findYearOfFirstBookByAuthorId($id)
+    {
+        return (new Query())
+            ->select('year')
+            ->from('tbl_books as b')
+            ->join('JOIN', 'tbl_book_author as ab', 'b.book_id = ab.book_id')
+            ->where('ab.author_id = :id')
+            ->addParams([':id' => $id])
+            ->orderBy('year ASC')
+            ->one();
+    }
+
+    public function findYearOfLastBookByAuthorId($id)
+    {
+        return (new Query())
+            ->select('year')
+            ->from('tbl_books as b')
+            ->join('JOIN', 'tbl_book_author as ab', 'b.book_id = ab.book_id')
+            ->where('ab.author_id = :id')
+            ->addParams([':id' => $id])
+            ->orderBy('year DESC')
+            ->one();
+    }
+
+    public function findBookAmountByAuthorId($id)
+    {
+        return (new Query())
+            ->select('DISTINCT * as amount')
+            ->from('tbl_books AS b')
+            ->join('JOIN', 'tbl_book_author AS ab', 'b.book_id = ab.book_id')
+            ->where('ab.author_id = :id')
+            ->addParams([':id' => $id])
+            ->count();
     }
 }

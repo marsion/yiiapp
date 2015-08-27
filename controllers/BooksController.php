@@ -6,14 +6,15 @@ use \yii\db;
 use yii\web\Controller;
 use app\services\BookServices;
 use app\services\GenreServices;
+use app\services\CountryServices;
 use yii\data\Pagination;
 
 class BooksController extends Controller {
 
     public function actionList($sort = null, $ord = null, $c = null, $per = null)
     {
-        $pages = self::paginate($sort, $ord, $c, $per);
-        $countryOptions = self::services()->getFilterOptionsCountries();
+        $pages = self::paginate($c, $per);
+        $countryOptions = self::countryServices()->getFilterOptionsCountries();
         $genreOptions = self::genreServices()->getFilterOptionsGenres();
 
         $books = self::services()->getAllBooks($pages, $sort, $ord, $c);
@@ -28,7 +29,8 @@ class BooksController extends Controller {
         return $this->render('single', array('book' => $book, 'genres' => $genres));
     }
 
-    protected function services(){
+    protected function services()
+    {
         return new BookServices();
     }
 
@@ -37,10 +39,15 @@ class BooksController extends Controller {
         return new GenreServices();
     }
 
+    protected function countryServices()
+    {
+        return new CountryServices();
+    }
+
     protected function paginate($country, $per){
         $pagination = new Pagination(['totalCount' => self::services()->getBooksCountByCountry($country),
             'pageSize' => $per,
-            'defaultPageSize' => 60,
+            'defaultPageSize' => 30,
         ]);
         $pagination->pageSizeParam = false;
         return $pagination;

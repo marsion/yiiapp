@@ -11,7 +11,7 @@ $ord = !empty( $_GET['ord'] ) ? $_GET['ord'] : 'desc';
 $c = !empty( $_GET['c'] ) ? $_GET['c'] : '';
 $g = !empty( $_GET['g'] ) ? $_GET['g'] : '';
 $sec = !empty( $_GET['sec'] ) ? $_GET['sec'] : '';
-$per = !empty( $_GET['per'] ) ? $_GET['per'] : '60';
+$per = !empty( $_GET['per'] ) ? $_GET['per'] : '30';
 
 ?>
 
@@ -51,9 +51,9 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '60';
                 <div class="orderby-item">
                     <div class="textHelper">показати: </div>
                     <select name="per" onchange="this.form.submit()">
+                        <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                         <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
                         <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
-                        <option value="240" <?php echo $per == '240' ? 'selected' : ''; ?>>240</option>
                     </select>
                 </div>
             </div>
@@ -78,9 +78,9 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '60';
                     <select name="c" onchange="this.form.submit()">
                         <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- країна ---</option>
                         <?php foreach($countryOptions as $countryOpt) { ?>
-                            <option value="<?php echo $countryOpt['value']; ?>"
-                                <?php echo $c == $countryOpt['value'] ? 'selected' : ''; ?> >
-                                <?php echo $countryOpt['text']; ?>
+                            <option value="<?php echo $countryOpt['iso']; ?>"
+                                <?php echo $c == $countryOpt['iso'] ? 'selected' : ''; ?> >
+                                <?php echo $countryOpt['name']; ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -90,6 +90,7 @@ $per = !empty( $_GET['per'] ) ? $_GET['per'] : '60';
         </form>
     </div>
 
+    <div class="content_separator"></div>
 
     <div class="catalog">
     <?php foreach($books as $book) { ?>

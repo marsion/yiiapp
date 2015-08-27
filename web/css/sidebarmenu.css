@@ -1,0 +1,35 @@
+#accordion {
+    width:100%;
+}
+#accordion li{
+    cursor: pointer;
+    font-weight:bold;
+    margin-bottom:2px;
+    color: #665;
+    font-size: 0.9rem;
+    padding: 5px 8px;
+    background-image: url('img/arrow_up_down.png');
+    background-position: right 10px top 5px;
+    background-repeat: no-repeat;
+}
+
+#accordion li.active{
+    /*color:#C40;*/
+}
+#accordion li ul{
+    padding:0;
+    margin:10px 0 0 0;
+}
+
+#accordion li.active li{
+    text-indent:0;
+}
+#accordion li li{
+    font-weight: normal;
+    font-size: 1rem;
+    background:none;
+    border-top: 1px solid #DDC;
+}
+#accordion li li:first-child {
+    border: 0;
+}

@@ -23,6 +23,17 @@ class CountryDAO
         ->one();
     }
 
+    public function findCountryISOById($id)
+    {
+        return (new Query())
+        ->select('iso')
+        ->from('tbl_countries')
+        ->where('id = :id')
+        ->addParams([':id' => $id])
+        ->limit(1)
+        ->one();
+    }
+
     public function getRowById($id)
     {
         return self::get()
@@ -52,7 +63,7 @@ class CountryDAO
     public function findFilterOptionsCountries()
     {
         return (new Query())
-            ->select('name AS text, iso AS value')
+            ->select('name, iso')
             ->from('tbl_countries')
             ->distinct()
             ->all();

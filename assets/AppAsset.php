@@ -20,6 +20,7 @@ class AppAsset extends AssetBundle
     public $css = [
 //        'css/site.css',
         'css/style.css',
+        'css/sidebarmenu.css',
     ];
     public $js = [
     ];
@@ -27,4 +28,5 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 }

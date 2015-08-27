@@ -12,8 +12,13 @@ class AuthorModel extends Model {
     public $deathYear;
     public $countryId;
     public $countryName;
+    public $countryISO;
     public $bio;
     public $img;
     public $rating;
+    public $yearFirstBook;
+    public $yearLastBook;
+    public $bookAmount;
+    public $publishingHouses;
 }
 ?>

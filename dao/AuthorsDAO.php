@@ -33,7 +33,7 @@ class AuthorsDAO
         $country != null ? $countryName = "c.iso = '" . $country . "'" : $countryName = 1;
 
         return (new Query())
-            ->select('*')
+            ->select('author_id, full_name')
             ->from('tbl_authors as a')
             ->join('LEFT JOIN', 'tbl_countries as c', 'a.country = c.id')
             ->where($countryName)
@@ -41,6 +41,17 @@ class AuthorsDAO
             ->limit($pages->limit)
             ->orderBy($sortBy)
             ->all();
+    }
+
+    public function findAuthorForAllHisBooks($id)
+    {
+        return (new Query())
+        ->select('author_id, full_name, country')
+        ->from('tbl_authors as a')
+        ->where('a.author_id = :author_id')
+        ->addParams([':author_id' => $id])
+        ->limit(1)
+        ->one();
     }
 
     public function findAuthorsByBookID($id) {

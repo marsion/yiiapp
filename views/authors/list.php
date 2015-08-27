@@ -1,4 +1,7 @@
 <?php
+//$this->registerJs('alert("Hello world!")', $this::POS_LOAD, 'main-index');
+$this->registerJsFile('@web/js/sidebarmenu.js', ['position' => $this::POS_BEGIN], 'sidebarmenu');
+
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
 use app\helpers\MyBreadcrumbs;
@@ -10,10 +13,12 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'name';
 $ord = !empty($_GET['ord']) ? $_GET['ord'] : 'asc';
 $c = !empty($_GET['c']) ? $_GET['c'] : '';
 $sec = !empty($_GET['sec']) ? $_GET['sec'] : '';
-$per = !empty($_GET['per']) ? $_GET['per'] : '60';
+$per = !empty($_GET['per']) ? $_GET['per'] : '30';
 
 ?>
+<script type="text/javascript">
 
+    </script>
 <div class="left" id="main">
     <div id="main_content">
         <div>
@@ -53,9 +58,9 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '60';
                         <div class="orderby-item">
                             <div class="textHelper">показати:</div>
                             <select name="per" onchange="this.form.submit()">
+                                <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                                 <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
                                 <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
-                                <option value="240" <?php echo $per == '240' ? 'selected' : ''; ?>>240</option>
                             </select>
                         </div>
                     </div>
@@ -67,19 +72,22 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '60';
                                 <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- країна ---</option>
                                 <?php if (count($countryOptions) > 0) { ?>
                                     <?php foreach ($countryOptions as $countryOpt) { ?>
-                                        <option value="<?php echo $countryOpt['value']; ?>"
-                                            <?php echo $c == $countryOpt['value'] ? 'selected' : ''; ?> >
-                                            <?php echo $countryOpt['text']; ?>
+                                        <option value="<?php echo $countryOpt['iso']; ?>"
+                                            <?php echo $c == $countryOpt['iso'] ? 'selected' : ''; ?> >
+                                            <?php echo $countryOpt['name']; ?>
                                         </option>
                                     <?php } ?>
                                 <?php } ?>
                             </select>
                         </div>
+
                     </div>
 
 
                 </form>
             </div>
+
+            <div class="content_separator"></div>
 
             <?php if (count($authors) > 0) { ?>
 
@@ -125,18 +133,42 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '60';
     <div id="sidebar_content">
 
         <div class="box">
-
-            <div class="box_title">Категорії</div>
-            <?php if (count($genres) > 1) { ?>
-                <div class="box_content">
-                    <ul>
-                        <?php foreach ($genres as $genre) { ?>
-                            <li><a href="#"><?php echo $genre['text']; ?></a></li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            <?php } ?>
+            <div id="celebs">
+                <ul id="accordion">
+                    <li class="active">
+                        Художня література
+                        <ul>
+                            <li><a href="#">Computadors</a></li>
+                            <li><a href="#">Johny Stardust</a></li>
+                            <li><a href="#">Beau Dandy</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Навчальна література
+                        <ul>
+                            <li><a href="#">Sinusoidal Tendancies</a></li>
+                            <li><a href="#">Steve Extreme</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Дитяча література
+                        <ul>
+                            <li><a href="#">Duran Duran Duran</a></li>
+                            <li><a href="#">Mike's Mechanic</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Бізнес і економіка
+                        <ul>
+                            <li><a href="#">Lardy Dah</a></li>
+                            <li><a href="#">Rove Live</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+
+
 
         <div class="box">
 

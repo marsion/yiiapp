@@ -26,7 +26,7 @@ html {
 body {
     background: #353530;
     color: #5A5A50;
-    font: normal 1.2em Georgia,sans-serif;
+    font: normal 1.1rem Verdana,serif; /*Georgia,sans-serif;*/
     height: 100%;
     padding-bottom: 1px; /* force scrollbars */
 }
@@ -37,16 +37,17 @@ body {
 ------------------------------------------------------------------- */
 
 p {
-    line-height: 1.3em;
+    line-height: 1.2rem;
     padding: 0.2em 0 1.2em;
+    font-size: 1.1rem;
 }
 
-h1 {font: normal 2.2em Georgia,sans-serif;}
-h2 {font: normal 2em Georgia,sans-serif;}
-h3 {font: normal 1.8em Georgia,sans-serif;}
-h4 {font: normal 1.6em Georgia,sans-serif;}
-h5 {font: normal 1.4em Georgia,sans-serif;}
-h6 {font: bold 1.2em Georgia,sans-serif;}
+h1 {font: normal 2.2em Verdana,serif;}
+h2 {font: normal 2em Verdana,serif;}
+h3 {font: normal 1.8em Verdana,serif;}
+h4 {font: normal 1.6em Verdana,serif;}
+h5 {font: normal 1.4em Verdana,serif;}
+h6 {font: bold 1.2em Verdana,serif;}
 
 h1,h2,h3,h4,h5,h6 {margin-bottom: 0.1em;}
 
@@ -70,7 +71,7 @@ blockquote {
 table.data_table {
     border: 1px solid #CCB;
 
-    width: 100%;
+    /*width: 100%;*/
 }
 table.data_table th {
     background: url('img/grain_dark.gif');
@@ -79,7 +80,7 @@ table.data_table th {
     text-align: left;
 }
 table.data_table tr {border-bottom: 1px solid #DDD;}
-table.data_table td, table th {padding: 8px;}
+table.data_table td, table th {padding: 5px 8px;}
 table.data_table td {
     background: url('img/grain_light.gif');
     border: 1px solid #DDC;
@@ -302,7 +303,7 @@ img.right {margin: 0 0 15px 12px;}
     border-right: 1px solid #AFA69C;
     color: #654;
     float: left;
-    font: bold 0.9em Georgia,Tahoma,sans-serif;
+    font: bold 0.9rem Verdana,serif; /*Georgia,sans-serif;*/
     margin-right: 1px;
     padding: 10px 12px;
     text-align: center;
@@ -349,7 +350,7 @@ img.right {margin: 0 0 15px 12px;}
     background: #DDD url('img/grain_dark.gif');
     border-top: 1px dashed #C0C0B0;
 }
-#dashboard_content {padding: 16px 0 22px;font-size: 0.9em;}
+#dashboard_content {padding: 16px 0 22px;font-size: 0.9rem;}
 
 #dashboard .col3 {width: 371px;}
 #dashboard .col3mid {width: 454px;}
@@ -458,21 +459,25 @@ img.right {margin: 0 0 15px 12px;}
     margin-bottom: 20px;
 }
 .product-card-img a.img {
+    /*display: block;*/
+}
+.product-card-img a.img img{
     background: url('img/grain_dark.gif');
-    display: block;
     padding: 4px;
 }
 .product-card-title {
-    font: normal 2em Georgia,sans-serif;
-}
-.product-card-other-books{
-    font-size: 14px;
-    margin:20px 0;
-    text-align: center;
+    font: normal 2rem Verdana,serif;
 }
 .product-card-other-books a {
-    color:#C40;
+     color:#C40;
+     font: normal 1.2rem Verdana,serif;
+ }
+.product-card-rating{
+    font-size: 14px;
+    margin:5px 0 20px 0;
+    text-align: center;
 }
+
 .product-card-details{
     width:690px;
     margin: 20px 0;
@@ -482,8 +487,15 @@ img.right {margin: 0 0 15px 12px;}
     overflow: scroll;
     overflow-x: hidden;
 }
+.product-card-info {
+    width: 150px;
+}
+
+.product-card-value {
+    width: 450px;
+}
 .product-card-info-column {
-    width: 90px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -555,7 +567,10 @@ img.right {margin: 0 0 15px 12px;}
     font-weight: bold;
     padding: 5px 8px;
 }
-.box_content {padding: 8px 0 8px;font-size: 0.9em;}
+.box_content {
+    padding: 8px 0 8px;
+    font-size: 1rem;
+}
 .box li {
     border-top: 1px solid #DDC;
     padding: 4px 6px;
@@ -635,6 +650,8 @@ filtering-sorting panel
 }
 .orderby-item {
     display: inline-block;
+    padding-left:5px;
+    padding-right:5px;
 }
 .textHelper {
     font-size: 10px;
@@ -659,6 +676,8 @@ filtering-sorting panel
     border:2px solid #e2e2d9;
     padding-right:15px;
 
+    max-width: 200px;
+
 }
 select::-ms-expand {
     display: none;
@@ -667,14 +686,15 @@ select::-ms-expand {
 breadcrumbs
 ----------------------------------------------------------------------*/
 .breadcrumbs-bar {
-
+    border-bottom: 1px solid #D6D6C6;
     font: normal 11px Verdana,serif;
 }
 ul.breadcrumbs {
-    background: url('img/grain_dark.gif');
+    /*background: url('img/grain_dark.gif');*/
+
     color: #665;
     list-style: none;
-    padding: 5px 8px;
+    padding: 5px 8px 17px;
     margin: 0;
 }
 ul.breadcrumbs li {
@@ -740,4 +760,11 @@ ul.catalog-pagination li a, ul.catalog-pagination li span {
     padding: 30px;
     font-size: 1.2rem;
     text-align: center;
+}
+/*
+---------------most popular books of author-----*/
+.additional_books_title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin:15px 0 25px;
 }

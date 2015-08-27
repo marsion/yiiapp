@@ -4,6 +4,7 @@ namespace app\services;
 
 use app\models\AuthorModel;
 use app\dao\AuthorsDAO;
+use app\services\BookServices;
 use yii\web\NotFoundHttpException;
 
 class AuthorServices
@@ -23,6 +24,16 @@ class AuthorServices
         return new ImgServices();
     }
 
+    protected function bookServices()
+    {
+        return new BookServices();
+    }
+
+    protected function publishingHouseServices()
+    {
+        return new PublishingHouseServices();
+    }
+
     public function getAllAuthors($pages, $sort, $ord, $country)
     {
         if($data = self::dao()->findAllAuthors($pages, $sort, $ord, $country)) {
@@ -30,13 +41,6 @@ class AuthorServices
                 $author = new AuthorModel();
                 $author->id = $row['author_id'];
                 $author->fullName = $row['full_name'];
-                $author->birthYear = $row['birth_year'];
-                $author->deathYear = $row['death_year'];
-                $author->countryId = $row['country'];
-                $author->countryName = $row['name'];
-                $author->bio = mb_substr($row['bio'], 0, mb_strrpos(mb_substr($row['bio'],
-                        0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
-                $author->rating = $row['rating'];
                 $author->img = self::imgServices()->getImageByAuthorId($row['author_id']);
 
                 $authors[] = $author;
@@ -59,8 +63,13 @@ class AuthorServices
             $author->countryId = $data['country'];
             $author->bio = $data['bio'];
             $author->rating = $data['rating'];
+            $author->yearFirstBook = self::bookServices()->getYearOfFirstBookByAuthorId($id);
+            $author->yearLastBook = self::bookServices()->getYearOfLastBookByAuthorId($id);
+            $author->bookAmount = self::bookServices()->getBookAmountByAuthorId($id);
             $author->countryName = self::countryServices()->getCountryNameById($data['country']);
-            $author->img = self::imgServices()->getImageByAuthorId($data['author_id']);
+            $author->countryISO = self::countryServices()->getCountryISOById($data['country']);
+            $author->img = self::imgServices()->getImageByAuthorId($id);
+            $author->publishingHouses = self::publishingHouseServices()->getAllPublishingHousesByAuthorId($id);
 
             return $author;
         } else {
@@ -74,20 +83,27 @@ class AuthorServices
                 $author = new AuthorModel();
                 $author->id = $row['author_id'];
                 $author->fullName = $row['full_name'];
-                $author->birthYear = $row['birth_year'];
-                $author->deathYear = $row['death_year'];
-                $author->countryId = $row['country'];
-                $author->rating = $row['rating'];
-                $author->bio = mb_substr($row['bio'], 0, mb_strrpos(mb_substr($row['bio'],
-                        0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
-
-                $author->countryName = self::countryServices()->getCountryNameById($row['country']);
-                $author->img = self::imgServices()->getImageByAuthorId($row['author_id']);
 
                 $authors[] = $author;
             }
 
             return $authors;
+        } else {
+            return array();
+        }
+    }
+
+    public function getAuthorForAllHisBooks($id)
+    {
+        if($data = self::dao()->findAuthorForAllHisBooks($id)) {
+            $author = new AuthorModel();
+            $author->id = $data['author_id'];
+            $author->fullName = $data['full_name'];
+            $author->countryId = $data['country'];
+            $author->countryName = self::countryServices()->getCountryNameById($data['country']);
+            $author->img = self::imgServices()->getImageByAuthorId($data['author_id']);
+
+            return $author;
         } else {
             return array();
         }

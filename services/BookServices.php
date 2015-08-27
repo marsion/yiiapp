@@ -32,9 +32,6 @@ class BookServices {
                 $book = new BookModel();
                 $book->id = $row['book_id'];
                 $book->title = $row['title'];
-                $book->description = mb_substr($row['description'], 0, mb_strrpos(mb_substr($row['description'],
-                        0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
-
                 $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
                 $book->img = self::imgServices()->getImageByBookId($row['book_id']);
                 $books[] = $book;
@@ -85,8 +82,51 @@ class BookServices {
         }
     }
 
-    public function getFilterOptionsCountries() {
-        return self::dao()->findFilterOptionsCountries();
+    public function getMostPopularBooksByAuthorID($id, $amount)
+    {
+        if($data = self::dao()->findMostPopularBooksByAuthorID($id, $amount)) {
+
+            foreach ($data as $row) {
+
+                $book = new BookModel();
+                $book->id = $row['book_id'];
+                $book->title = $row['title'];
+                $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
+                $book->img = self::imgServices()->getImageByBookId($row['book_id']);
+
+                $books[] = $book;
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    public function getYearOfFirstBookByAuthorId($id)
+    {
+        if($row = self::dao()->findYearOfFirstBookByAuthorId($id)) {
+            return $row['year'];
+        } else {
+            return "";
+        }
+    }
+
+    public function getYearOfLastBookByAuthorId($id)
+    {
+        if($row = self::dao()->findYearOfLastBookByAuthorId($id)) {
+            return $row['year'];
+        } else {
+            return "";
+        }
+    }
+
+    public function getBookAmountByAuthorId($id)
+    {
+        if($row = self::dao()->findBookAmountByAuthorId($id)) {
+            return $row;
+        } else {
+            return 0;
+        }
     }
 
     protected function imgServices()

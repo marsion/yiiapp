@@ -18,6 +18,12 @@ class CountryServices {
         return $row['name'];
     }
 
+    public function getCountryISOById($id)
+    {
+        $row = self::dao()->findCountryISOById($id);
+        return $row['iso'];
+    }
+
     protected function dao(){
         return new CountryDAO();
     }
