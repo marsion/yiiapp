@@ -2,6 +2,7 @@
 
 namespace app\dao;
 
+use Yii;
 use yii\db\Query;
 
 class CountryDAO
@@ -62,11 +63,8 @@ class CountryDAO
 
     public function findFilterOptionsCountries()
     {
-        return (new Query())
-            ->select('name, iso')
-            ->from('tbl_countries')
-            ->distinct()
-            ->all();
+        $sql = "SELECT `id`, `name` FROM `tbl_countries` WHERE `filter` = 1 ORDER BY `name` ASC";
+        return Yii::$app->db->createCommand($sql)->queryAll();
     }
 }
 

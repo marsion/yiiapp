@@ -10,7 +10,7 @@ class LanguageDAO
 
     public function findFilterOptionsLanguages()
     {
-        $sql = "SELECT DISTINCT `lang_id`, `name` FROM `tbl_languages` ORDER BY `name` ASC ";
+        $sql = "SELECT DISTINCT `lang_id`, `name` FROM `tbl_languages` WHERE `filter` = 1 ORDER BY `name` ASC ";
         return Yii::$app->db->createCommand($sql)->queryAll();
     }
 

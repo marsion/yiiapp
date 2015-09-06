@@ -38,7 +38,7 @@ class BookServices {
             }
             return $books;
         } else {
-            throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
+            return array();
         }
     }
 

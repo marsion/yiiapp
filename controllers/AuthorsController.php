@@ -27,8 +27,8 @@ class AuthorsController extends Controller
     public function actionSingle($id)
     {
         $authorModel = self::services()->getAuthorByID($id);
-        $popularBooks = self::bookServices()->getMostPopularBooksByAuthorID($id, 6);
-        $usersChoiceBooks = self::bookServices()->getUsersChoiceBooksByAuthorID($id, 6);
+        $popularBooks = self::bookServices()->getMostPopularBooksByAuthorID($id, 5);
+        $usersChoiceBooks = self::bookServices()->getUsersChoiceBooksByAuthorID($id, 5);
         $genres = self::genreServices()->getFilterOptionsGenres();
         return $this->render('single', ['id' => $id, 'author' => $authorModel, 'genres' => $genres,
             'popularBooks' => $popularBooks, 'usersChoiceBooks' => $usersChoiceBooks]);

@@ -82,10 +82,10 @@ AppAsset::register($this);
 </div>
 
 <div id="dashboard">
-    <div id="dashboard_content">
-        <div class="center_wrapper">
 
-            <div class="col3 left">
+        <div class="center_wrapper">
+            <div id="dashboard_content">
+            <div class="col3">
                 <div class="col3_content">
 
                     <h4>Головне меню</h4>
@@ -103,7 +103,7 @@ AppAsset::register($this);
                 </div>
             </div>
 
-            <div class="col3mid left">
+            <div class="col3">
                 <div class="col3_content">
 
                     <h4>Fermentum</h4>
@@ -118,7 +118,7 @@ AppAsset::register($this);
                 </div>
             </div>
 
-            <div class="col3 right">
+            <div class="col3">
                 <div class="col3_content">
 
                     <h4>Praesent</h4>

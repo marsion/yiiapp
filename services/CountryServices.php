@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\dao\CountryDAO;
+use app\models\CountryModel;
 use yii\db\Query;
 
 class CountryServices {
@@ -36,8 +37,16 @@ class CountryServices {
 
     public function getFilterOptionsCountries()
     {
-        if($options = self::dao()->findFilterOptionsCountries()) {
-            return $options;
+        if ($data = self::dao()->findFilterOptionsCountries()) {
+            foreach ($data as $row) {
+                $country = new CountryModel();
+                $country->id = $row['id'];
+                $country->name = $row['name'];
+
+                $countries[] = $country;
+            }
+
+            return $countries;
         } else {
             return array();
         }

@@ -57,7 +57,7 @@ class BooksDAO
         } elseif ($sort == 'year') {
             ($ord == 'asc') ? $sortsql = $sortsql . " `b`.`year` ASC " : $sortsql = $sortsql . " `b`.`year` DESC ";
         } else {
-            $sortsql = $sortsql . " `b`.`title` ASC ";
+            $sortsql = $sortsql . " `b`.`year` DESC ";
         }
 
         $sql = "SELECT `b`.`book_id`, `b`.`title` FROM `tbl_books` AS `b` "
