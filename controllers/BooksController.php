@@ -7,26 +7,29 @@ use yii\web\Controller;
 use app\services\BookServices;
 use app\services\GenreServices;
 use app\services\CountryServices;
+use app\services\LanguageServices;
 use yii\data\Pagination;
 
 class BooksController extends Controller {
 
-    public function actionList($sort = null, $ord = null, $c = null, $per = null)
+    public function actionList($sort = null, $ord = null, $per = null,
+                               $c = null, $ph = null, $g = null, $l = null, $lo = null)
     {
-        $pages = self::paginate($c, $per);
+        $pages = self::paginate($per, $c, $ph, $g, $l, $lo);
         $countryOptions = self::countryServices()->getFilterOptionsCountries();
-        $genreOptions = self::genreServices()->getFilterOptionsGenres();
+        $langOptions = self::languageServices()->getFilterOptionsLanguages();
+        $genres = self::genreServices()->getFilterOptionsGenres();
 
-        $books = self::services()->getAllBooks($pages, $sort, $ord, $c);
+        $books = self::services()->getAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo);
         return $this->render('list', ['books' => $books, 'pages' => $pages,
-            'countryOptions' => $countryOptions, 'genreOptions' => $genreOptions, 'genres' => $genreOptions]);
+            'countryOptions' => $countryOptions, 'langOptions' => $langOptions, 'genres' => $genres]);
     }
 
     public function actionSingle($id)
     {
         $book = self::services()->getBookByID($id);
         $genres = self::genreServices()->getFilterOptionsGenres();
-        return $this->render('single', array('book' => $book, 'genres' => $genres));
+        return $this->render('single', ['book' => $book, 'genres' => $genres]);
     }
 
     protected function services()
@@ -44,8 +47,13 @@ class BooksController extends Controller {
         return new CountryServices();
     }
 
-    protected function paginate($country, $per){
-        $pagination = new Pagination(['totalCount' => self::services()->getBooksCountByCountry($country),
+    protected function languageServices()
+    {
+        return new LanguageServices();
+    }
+
+    protected function paginate($per, $c, $ph, $g, $l, $lo){
+        $pagination = new Pagination(['totalCount' => self::services()->getBooksCountByParams($c, $ph, $g, $l, $lo),
             'pageSize' => $per,
             'defaultPageSize' => 30,
         ]);

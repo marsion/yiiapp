@@ -20,5 +20,6 @@ class AuthorModel extends Model {
     public $yearLastBook;
     public $bookAmount;
     public $publishingHouses;
+    public $genres;
 }
 ?>

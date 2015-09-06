@@ -27,6 +27,18 @@ class AppController extends Controller
         return $this->render('contact', ['genres' => $genres]);
     }
 
+    public function actionPublishhouses()
+    {
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('publishhouses', ['genres' => $genres]);
+    }
+
+    public function actionGenres()
+    {
+        $genres = self::genreServices()->getFilterOptionsGenres();
+        return $this->render('genres', ['genres' => $genres]);
+    }
+
     public function actionLogin()
     {
         $genres = self::genreServices()->getFilterOptionsGenres();

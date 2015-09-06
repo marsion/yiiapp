@@ -287,11 +287,11 @@ img.right {margin: 0 0 15px 12px;}
 
 }
 #site_title a {
-    color: #FFF;
+    color: #FFB;
     text-decoration: none;
 
 }
-#site_title a:hover {color: #FFB;}
+#site_title a:hover {color: #FFF;}
 #site_title h1 span {color: #CCB;}
 
 
@@ -494,6 +494,9 @@ img.right {margin: 0 0 15px 12px;}
 .product-card-value {
     width: 450px;
 }
+.product-card-value a{
+    text-decoration: underline;
+}
 .product-card-info-column {
     font-size: 1rem;
     font-weight: bold;
@@ -638,7 +641,7 @@ pagination
 filtering-sorting panel
 --------------------------------------------------------------------*/
 .filt-sort-pan {
-    padding: 25px 0 10px;
+    padding: 25px 0 15px;
     min-height: 76px;
 }
 .filter-pan {
@@ -676,9 +679,28 @@ filtering-sorting panel
     border:2px solid #e2e2d9;
     padding-right:15px;
 
-    max-width: 200px;
+    width: 150px;
 
 }
+.filt-sort-pan select.per {
+    width: 50px;
+}
+.filt-sort-pan select.ord {
+    width: 100px;
+}
+.filt-sort-pan select.sort {
+    width: 150px;
+}
+.filt-sort-pan select.c {
+    width: 140px;
+}
+.filt-sort-pan select.l {
+    width: 140px;
+}
+.filt-sort-pan select.lo {
+    width: 190px;
+}
+
 select::-ms-expand {
     display: none;
 }

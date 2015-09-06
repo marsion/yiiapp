@@ -35,14 +35,14 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                         <div class="orderby-pan">
                             <div class="orderby-item">
                                 <div class="textHelper">сортувати за:</div>
-                                <select name="sort" onchange="this.form.submit()">
+                                <select class="sort" name="sort" onchange="this.form.submit()">
                                     <option value="title" <?php echo $sort == 'title' ? 'selected' : ''; ?>>назвою
                                     </option>
                                 </select>
                             </div>
                             <div class="orderby-item">
                                 <div class="textHelper">впорядкувати за:</div>
-                                <select name="ord" onchange="this.form.submit()">
+                                <select class="ord" name="ord" onchange="this.form.submit()">
                                     <option value="asc" <?php echo $ord == 'asc' ? 'selected' : ''; ?>>зростанням
                                     </option>
                                     <option value="desc" <?php echo $ord == 'desc' ? 'selected' : ''; ?>>спаданням
@@ -51,7 +51,7 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                             </div>
                             <div class="orderby-item">
                                 <div class="textHelper">показати:</div>
-                                <select name="per" onchange="this.form.submit()">
+                                <select class="per" name="per" onchange="this.form.submit()">
                                     <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                                     <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
                                     <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
@@ -62,8 +62,34 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                         <div class="filter-pan">
                             <div class="orderby-item">
                                 <div class="textHelper">країна: </div>
-                                <select name="c" onchange="this.form.submit()" disabled="disabled">
+                                <select class="c" name="c" onchange="this.form.submit()">
                                     <option value=""><?php echo $author->countryName; ?></option>
+                                </select>
+                            </div>
+
+                            <div class="orderby-item">
+                                <div class="textHelper">мова: </div>
+                                <select class="l" name="l" onchange="this.form.submit()">
+                                    <option value="" <?php //echo $l == '' ? 'selected' : ''; ?>>мову</option>
+<!--                                    --><?php //foreach($langOptions as $langOpt) { ?>
+<!--                                        <option value="--><?php //echo $langOpt->id; ?><!--"-->
+<!--                                            --><?php //echo $l == $langOpt->id ? 'selected' : ''; ?><!-- >-->
+<!--                                            --><?php //echo $langOpt->name; ?>
+<!--                                        </option>-->
+<!--                                    --><?php //} ?>
+                                </select>
+                            </div>
+
+                            <div class="orderby-item">
+                                <div class="textHelper">мова оригіналу: </div>
+                                <select class="lo" name="lo" onchange="this.form.submit()">
+                                    <option value="" <?php //echo $lo == '' ? 'selected' : ''; ?>>мову оригіналу</option>
+<!--                                    --><?php //foreach($langOptions as $langOpt) { ?>
+<!--                                        <option value="--><?php //echo $langOpt->id; ?><!--"-->
+<!--                                            --><?php //echo $lo == $langOpt->id ? 'selected' : ''; ?><!-- >-->
+<!--                                            --><?php //echo $langOpt->name; ?>
+<!--                                        </option>-->
+<!--                                    --><?php //} ?>
                                 </select>
                             </div>
                         </div>

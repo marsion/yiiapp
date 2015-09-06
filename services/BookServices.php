@@ -14,9 +14,9 @@ class BookServices {
         return new BooksDAO();
     }
 
-    public function getBooksCountByCountry($country)
+    public function getBooksCountByParams($c, $ph, $g, $l, $lo)
     {
-        return self::dao()->findBooksCountByCountry($country);
+        return self::dao()->findBooksCountByParams($c, $ph, $g, $l, $lo);
     }
 
     public function getBooksCountByAuthorId($id)
@@ -24,9 +24,9 @@ class BookServices {
         return self::dao()->findBooksCountByAuthorId($id);
     }
 
-    public function getAllBooks($pages, $sort, $ord, $country)
+    public function getAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo)
     {
-        if($data = self::dao()->findAllBooks($pages, $sort, $ord, $country)) {
+        if($data = self::dao()->findAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo)) {
 
             foreach ($data as $row) {
                 $book = new BookModel();
@@ -50,9 +50,19 @@ class BookServices {
             $book->id = $id;
             $book->title = $row['title'];
             $book->description = $row['description'];
+            $book->rating = $row['rating'];
+            $book->pages = $row['pages'];
+            $book->isbn = $row['isbn'];
+            $book->lang = self::languageServices()->getLanguageById($row['lang']);
+            $book->origLang = self::languageServices()->getLanguageById($row['orig_lang']);
+            $book->year = $row['year'];
+            $book->translator = self::translatorServices()->getTranslatorById($row['trans_id']);
+            $book->publishingHouse = self::publishingHouseServices()->getPublishingHouseById($row['ph_id']);
+            $book->series = self::seriesServices()->getSeriesById($row['series_id']);
 
             $book->authors = self::authorServices()->getAuthorsByBookID($id);
             $book->img = self::imgServices()->getImageByBookId($id);
+            $book->genres = self::genreServices()->getAllGenresOfBookById($id);
 
             return $book;
         } else {
@@ -102,21 +112,41 @@ class BookServices {
         }
     }
 
+    public function getUsersChoiceBooksByAuthorID($id, $amount)
+    {
+        if($data = self::dao()->findUsersChoiceBooksByAuthorID($id, $amount)) {
+
+            foreach ($data as $row) {
+
+                $book = new BookModel();
+                $book->id = $row['book_id'];
+                $book->title = $row['title'];
+                $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
+                $book->img = self::imgServices()->getImageByBookId($row['book_id']);
+
+                $books[] = $book;
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
     public function getYearOfFirstBookByAuthorId($id)
     {
         if($row = self::dao()->findYearOfFirstBookByAuthorId($id)) {
-            return $row['year'];
+            return $row['year'] != 0 ? $row['year'] : "-";
         } else {
-            return "";
+            return "-";
         }
     }
 
     public function getYearOfLastBookByAuthorId($id)
     {
         if($row = self::dao()->findYearOfLastBookByAuthorId($id)) {
-            return $row['year'];
+            return $row['year'] != 0 ? $row['year'] : "-";
         } else {
-            return "";
+            return "-";
         }
     }
 
@@ -137,6 +167,31 @@ class BookServices {
     protected function authorServices()
     {
         return new AuthorServices();
+    }
+
+    protected function translatorServices()
+    {
+        return new TranslatorServices();
+    }
+
+    protected function publishingHouseServices()
+    {
+        return new PublishingHouseServices();
+    }
+
+    protected function seriesServices()
+    {
+        return new SeriesServices();
+    }
+
+    protected function genreServices()
+    {
+        return new GenreServices();
+    }
+
+    protected function languageServices()
+    {
+        return new LanguageServices();
     }
 }
 ?>

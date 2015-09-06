@@ -34,6 +34,11 @@ class AuthorServices
         return new PublishingHouseServices();
     }
 
+    protected function genreServices()
+    {
+        return new GenreServices();
+    }
+
     public function getAllAuthors($pages, $sort, $ord, $country)
     {
         if($data = self::dao()->findAllAuthors($pages, $sort, $ord, $country)) {
@@ -70,6 +75,7 @@ class AuthorServices
             $author->countryISO = self::countryServices()->getCountryISOById($data['country']);
             $author->img = self::imgServices()->getImageByAuthorId($id);
             $author->publishingHouses = self::publishingHouseServices()->getAllPublishingHousesByAuthorId($id);
+            $author->genres = self::genreServices()->getAllGenresOfAuthorById($id);
 
             return $author;
         } else {
@@ -114,7 +120,7 @@ class AuthorServices
         if($data = self::dao()->findAuthorById($id)) {
             return $data['full_name'];
         } else {
-            throw new NotFoundHttpException('Sorry, but there is no author with such ID!');
+            return "";
         }
     }
 

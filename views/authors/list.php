@@ -40,24 +40,22 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                     <div class="orderby-pan">
                         <div class="orderby-item">
                             <div class="textHelper">сортувати за:</div>
-                            <select name="sort" onchange="this.form.submit()">
-                                <option value="name" <?php echo $sort == 'name' ? 'selected' : ''; ?>>ім’ям</option>
-                                <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю
-                                </option>
-                                <option value="chron" <?php echo $sort == 'chron' ? 'selected' : ''; ?>>хронологією
-                                </option>
+                            <select name="sort" class="sort" onchange="this.form.submit()" >
+                                <option class="option" value="name" <?php echo $sort == 'name' ? 'selected' : ''; ?>>ім’ям</option>
+                                <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю</option>
+                                <option value="byear" <?php echo $sort == 'byear' ? 'selected' : ''; ?>>роком народження</option>
                             </select>
                         </div>
                         <div class="orderby-item">
                             <div class="textHelper">впорядкувати за:</div>
-                            <select name="ord" onchange="this.form.submit()">
+                            <select name="ord" class="ord" onchange="this.form.submit()">
                                 <option value="asc" <?php echo $ord == 'asc' ? 'selected' : ''; ?>>зростанням</option>
                                 <option value="desc" <?php echo $ord == 'desc' ? 'selected' : ''; ?>>спаданням</option>
                             </select>
                         </div>
                         <div class="orderby-item">
                             <div class="textHelper">показати:</div>
-                            <select name="per" onchange="this.form.submit()">
+                            <select name="per" class="per" onchange="this.form.submit()">
                                 <option value="30" <?php echo $per == '30' ? 'selected' : ''; ?>>30</option>
                                 <option value="60" <?php echo $per == '60' ? 'selected' : ''; ?>>60</option>
                                 <option value="120" <?php echo $per == '120' ? 'selected' : ''; ?>>120</option>
@@ -68,8 +66,8 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                     <div class="filter-pan">
                         <div class="orderby-item">
                             <div class="textHelper">країна:</div>
-                            <select name="c" onchange="this.form.submit()">
-                                <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- країна ---</option>
+                            <select name="c" class="c" onchange="this.form.submit()">
+                                <option value="" <?php echo $c == '' ? 'selected' : ''; ?>>--- виберіть країну ---</option>
                                 <?php if (count($countryOptions) > 0) { ?>
                                     <?php foreach ($countryOptions as $countryOpt) { ?>
                                         <option value="<?php echo $countryOpt['iso']; ?>"
@@ -80,14 +78,13 @@ $per = !empty($_GET['per']) ? $_GET['per'] : '30';
                                 <?php } ?>
                             </select>
                         </div>
-
                     </div>
 
 
                 </form>
             </div>
 
-            <div class="content_separator"></div>
+<!--            <div class="content_separator"></div>-->
 
             <?php if (count($authors) > 0) { ?>
 

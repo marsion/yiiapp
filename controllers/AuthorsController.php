@@ -14,24 +14,24 @@ use Yii;
 class AuthorsController extends Controller
 {
 
-    public function actionList($sort = null, $ord = null, $c = null, $g = null, $per = null)
+    public function actionList($sort = null, $ord = null, $c = null, $per = null)
     {
         $pages = self::paginate($c, $per);
         $countryOptions = self::countryServices()->getFilterOptionsCountries();
 
         $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $c);
         return $this->render('list', ['authors' => $authorModels,
-            'pages' => $pages,
-            'countryOptions' => $countryOptions]);
+            'pages' => $pages, 'countryOptions' => $countryOptions]);
     }
 
     public function actionSingle($id)
     {
         $authorModel = self::services()->getAuthorByID($id);
         $popularBooks = self::bookServices()->getMostPopularBooksByAuthorID($id, 6);
+        $usersChoiceBooks = self::bookServices()->getUsersChoiceBooksByAuthorID($id, 6);
         $genres = self::genreServices()->getFilterOptionsGenres();
-        return $this->render('single', array('id' => $id, 'author' => $authorModel, 'genres' => $genres,
-            'popularBooks' => $popularBooks));
+        return $this->render('single', ['id' => $id, 'author' => $authorModel, 'genres' => $genres,
+            'popularBooks' => $popularBooks, 'usersChoiceBooks' => $usersChoiceBooks]);
     }
 
     public function actionBooks($id, $sort = null, $ord = null, $per = null)

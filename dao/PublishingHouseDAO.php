@@ -18,6 +18,16 @@ class PublishingHouseDAO
             ->addParams([':author_id' => $id])
             ->all();
     }
+
+    public function findPublishingHouseById($id)
+    {
+        return (new Query())
+            ->select('ph_id, name')
+            ->from('tbl_publishing_houses as ph')
+            ->where('ph_id = :id')
+            ->addParams([':id' => $id])
+            ->one();
+    }
 }
 
 ?>

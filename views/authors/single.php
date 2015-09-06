@@ -23,12 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="product-card">
                 <div class="product-card-box">
                     <div class="product-card-img">
+
+
                         <a class="img">
-                            <img src="<?php echo $author->img; ?>" alt=""/>
+                            <img src="<?php echo $author->img; ?>" alt="" width="168" height="248"/>
                         </a>
                         <div class="product-card-rating">
                             - <?php echo $author->rating; ?> +
                         </div>
+
                     </div>
 
                 </div>
@@ -53,47 +56,70 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="product-card-info">
                                     <div class="product-card-info-column">Країна:</div>
                                 </td>
-                                <td>
+                                <td class="product-card-value">
                                     <a href="<?php echo Yii::$app->homeUrl . 'authors?c=' . $author->countryISO; ?>">
                                         <?php echo $author->countryName; ?>
                                     </a>
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="product-card-info">
                                     <div class="product-card-info-column">Перша книга:</div>
                                 </td>
-                                <td><?php echo $author->yearFirstBook; ?></td>
+                                <td class="product-card-value"><?php echo $author->yearFirstBook; ?></td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="product-card-info">
                                     <div class="product-card-info-column">Остання книга:</div>
                                 </td>
-                                <td><?php echo $author->yearLastBook; ?></td>
+                                <td class="product-card-value"><?php echo $author->yearLastBook; ?></td>
                             </tr>
                             <tr>
-                                <td>
-                                    <div class="product-card-info-column">Кількість книг:</div>
+                                <td class="product-card-info">
+                                    <div class="product-card-info-column">Всього книг:</div>
                                 </td>
-                                <td><?php echo $author->bookAmount; ?></td>
+                                <td class="product-card-value">
+                                    <a href="<?php echo Yii::$app->homeUrl . 'authors/' . $author->id . '/books'; ?>">
+                                        <?php echo $author->bookAmount; ?>
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td class="product-card-info">
                                     <div class="product-card-info-column">Видавництва:</div>
                                 </td>
-                                <td>
-                                    <?php for ($i = 0; $i < count($author->publishingHouses); $i++) { ?>
-                                        <a href="<?php echo Yii::$app->homeUrl . 'authors?c=' . $author->publishingHouses[$i]->id; ?>">
-                                            <?php echo $author->publishingHouses[$i]->name; ?>
-                                        </a>
-                                        <?php if ((count($author->publishingHouses) > 1) && ($i < count($author->publishingHouses) - 1)) echo '; '; ?>
+                                <td class="product-card-value">
+                                    <?php if (count($author->publishingHouses) > 0) { ?>
+                                        <?php for ($i = 0; $i < count($author->publishingHouses); $i++) { ?>
+                                            <a href="<?php echo Yii::$app->homeUrl . 'authors?ph=' . $author->publishingHouses[$i]->id; ?>">
+                                                <?php echo $author->publishingHouses[$i]->name; ?></a>
+                                            <?php if ((count($author->publishingHouses) > 1) && ($i < count($author->publishingHouses) - 1)) echo '; '; ?>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <?php echo "-"; ?>
                                     <?php } ?>
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td class="product-card-info">
+                                    <div class="product-card-info-column">Категорії:</div>
+                                </td>
+                                <td class="product-card-value">
+                                    <?php if (count($author->genres) > 0) { ?>
+                                        <?php for ($i = 0; $i < count($author->genres); $i++) { ?>
+                                            <a href="<?php echo Yii::$app->homeUrl . 'books?g=' . $author->genres[$i]->id; ?>">
+                                                <?php echo $author->genres[$i]->name; ?></a>
+                                            <?php if ((count($author->genres) > 1) && ($i < count($author->genres) - 1)) echo '; ';
+                                        } ?>
+                                    <?php } else { ?>
+                                        <?php echo "-"; ?>
+                                    <?php } ?>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -102,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
 
-                <?php if(count($popularBooks) > 0) { ?>
+                <?php if (count($popularBooks) > 0) { ?>
                     <div class="content_separator"></div>
 
                     <div class="additional_books_title">Найпопулярніші книги автора:</div>
@@ -125,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php echo $book->authors[$i]->fullName; ?>
                                         </a>
                                         <?php if ((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', '; ?>
-                                   <?php } ?>
+                                    <?php } ?>
                                 </div>
                             </div>
                         <?php } ?>
@@ -133,13 +159,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php } ?>
 
-                <?php if(count($popularBooks) > 0) { ?>
+                <?php if (count($usersChoiceBooks) > 0) { ?>
 
                     <div class="content_separator"></div>
 
-                    <div class="additional_books_title">Читачі також обирають:</div>
+                    <div class="additional_books_title">Читачі <?php echo '&ldquo;' . $author->fullName . '&rdquo;'; ?>
+                        також обирають:
+                    </div>
                     <div class="additional_books">
-                        <?php foreach ($popularBooks as $book) { ?>
+                        <?php foreach ($usersChoiceBooks as $book) { ?>
                             <div class="item">
                                 <div class="itemImg">
                                     <a href="<?php echo Yii::$app->homeUrl . 'books/' . $book->id; ?>" class="img">
@@ -176,15 +204,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--<div class="box">
 
             <div class="box_title">Категорії</div>
-            <?php /*if (count($genres) > 1) { */?>
+            <?php /*if (count($genres) > 1) { */ ?>
                 <div class="box_content">
                     <ul>
-                        <?php /*foreach ($genres as $genre) { */?>
-                            <li><a href="#"><?php /*echo $genre['text']; */?></a></li>
-                        <?php /*} */?>
+                        <?php /*foreach ($genres as $genre) { */ ?>
+                            <li><a href="#"><?php /*echo $genre['text']; */ ?></a></li>
+                        <?php /*} */ ?>
                     </ul>
                 </div>
-            <?php /*} */?>
+            <?php /*} */ ?>
         </div>-->
 
         <div class="box">

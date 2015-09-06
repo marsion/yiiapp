@@ -22,6 +22,8 @@ return [
     'Home' => 'Головна',
     'Books' => 'Книги',
     'Authors' => 'Автори',
+    'Publishing Houses' => 'Видавництва',
+    'Genres' => 'Жанри',
     'About' => 'Про нас',
     'Contact us' => 'Напишіть нам',
 ];

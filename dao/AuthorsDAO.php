@@ -24,7 +24,7 @@ class AuthorsDAO
             ($ord == 'asc') ? $sortBy = 'full_name asc' : $sortBy = 'full_name desc';
         } elseif ($sort == 'rating') {
             ($ord == 'asc') ? $sortBy = 'rating asc' : $sortBy = 'rating desc';
-        } elseif ($sort == 'chron') {
+        } elseif ($sort == 'byear') {
             ($ord == 'asc') ? $sortBy = 'birth_year asc' : $sortBy = 'birth_year desc';
         } else {
             $sortBy = 'full_name asc';
@@ -68,13 +68,18 @@ class AuthorsDAO
 
     public function findAuthorsCountByCountryId($countryId)
     {
-        $countryId != null ? $id = $countryId : $id = 0;
+        return $countryId != null ?
 
-        return (new Query())
+         (new Query())
             ->select('*')
             ->from('tbl_authors as a')
             ->where('country = :country')
-            ->addParams([':country' => $id])
+            ->addParams([':country' => $countryId])
+            ->count()
+        :
+         (new Query())
+            ->select('*')
+            ->from('tbl_authors as a')
             ->count();
     }
 }
