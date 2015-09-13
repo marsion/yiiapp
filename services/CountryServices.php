@@ -29,12 +29,6 @@ class CountryServices {
         return new CountryDAO();
     }
 
-    public function getCountryIdByISO($iso)
-    {
-        $row = self::dao()->findCountryRowByISO($iso);
-        return $row['id'];
-    }
-
     public function getFilterOptionsCountries()
     {
         if ($data = self::dao()->findFilterOptionsCountries()) {

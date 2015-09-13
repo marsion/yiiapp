@@ -39,9 +39,9 @@ class AuthorServices
         return new GenreServices();
     }
 
-    public function getAllAuthors($pages, $sort, $ord, $country)
+    public function getAllAuthors($pages, $sort, $ord, $c, $byear, $byeq, $dyear, $dyeq)
     {
-        if($data = self::dao()->findAllAuthors($pages, $sort, $ord, $country)) {
+        if($data = self::dao()->findAllAuthors($pages, $sort, $ord, $c, $byear, $byeq, $dyear, $dyeq)) {
             foreach ($data as $row) {
                 $author = new AuthorModel();
                 $author->id = $row['author_id'];
@@ -99,22 +99,6 @@ class AuthorServices
         }
     }
 
-    public function getAuthorForAllHisBooks($id)
-    {
-        if($data = self::dao()->findAuthorForAllHisBooks($id)) {
-            $author = new AuthorModel();
-            $author->id = $data['author_id'];
-            $author->fullName = $data['full_name'];
-            $author->countryId = $data['country'];
-            $author->countryName = self::countryServices()->getCountryNameById($data['country']);
-            $author->img = self::imgServices()->getImageByAuthorId($data['author_id']);
-
-            return $author;
-        } else {
-            return array();
-        }
-    }
-
     public function getAuthorNameByID($id)
     {
         if($data = self::dao()->findAuthorById($id)) {
@@ -124,10 +108,9 @@ class AuthorServices
         }
     }
 
-    public function getAuthorsCountByCountryId($country)
+    public function getAuthorsCountByParams($c, $byear, $byeq, $dyear, $dyeq)
     {
-        $countryId = self::countryServices()->getCountryIdByISO($country);
-        return self::dao()->findAuthorsCountByCountryId($countryId);
+        return self::dao()->findAuthorsCountByParams($c, $byear, $byeq, $dyear, $dyeq);
     }
 }
 

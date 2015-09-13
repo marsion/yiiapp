@@ -10,17 +10,32 @@ use app\services\CountryServices;
 use app\services\LanguageServices;
 use yii\data\Pagination;
 
-class BooksController extends Controller {
+class BooksController extends Controller
+{
 
-    public function actionList($sort = null, $ord = null, $per = null,
-                               $c = null, $ph = null, $g = null, $l = null, $lo = null)
+    public function actionList()
     {
-        $pages = self::paginate($per, $c, $ph, $g, $l, $lo);
+        $sort = Yii::$app->request->get('sort', null);
+        $ord = Yii::$app->request->get('ord', null);
+        $per = Yii::$app->request->get('per', null);
+        $a = Yii::$app->request->get('a', array());
+        $c = Yii::$app->request->get('c', array());
+        $ph = Yii::$app->request->get('ph', array());
+        $g = Yii::$app->request->get('g', array());
+        $lang = Yii::$app->request->get('lang', array());
+        $langor = Yii::$app->request->get('langor', array());
+        $year = Yii::$app->request->get('year', null);
+        $yeq = Yii::$app->request->get('yeq', null);
+        $ser = Yii::$app->request->get('ser', array());
+        $trans = Yii::$app->request->get('trans', array());
+
+        $pages = self::paginate($per, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans);
         $countryOptions = self::countryServices()->getFilterOptionsCountries();
         $langOptions = self::languageServices()->getFilterOptionsLanguages();
         $genres = self::genreServices()->getFilterOptionsGenres();
 
-        $books = self::services()->getAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo);
+        $books = self::services()->getAllBooks($pages, $sort, $ord, $a, $c, $ph, $g,
+            $lang, $langor, $year, $yeq, $ser, $trans);
         return $this->render('list', ['books' => $books, 'pages' => $pages,
             'countryOptions' => $countryOptions, 'langOptions' => $langOptions, 'genres' => $genres]);
     }
@@ -52,13 +67,17 @@ class BooksController extends Controller {
         return new LanguageServices();
     }
 
-    protected function paginate($per, $c, $ph, $g, $l, $lo){
-        $pagination = new Pagination(['totalCount' => self::services()->getBooksCountByParams($c, $ph, $g, $l, $lo),
-            'pageSize' => $per,
-            'defaultPageSize' => 30,
-        ]);
+    protected function paginate($per, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
+    {
+        $pagination = new Pagination(
+            ['totalCount' => self::services()->getBooksCountByParams($a, $c, $ph, $g, $lang, $langor,
+                $year, $yeq, $ser, $trans),
+                'pageSize' => $per,
+                'defaultPageSize' => 30,
+            ]);
         $pagination->pageSizeParam = false;
         return $pagination;
     }
 }
+
 ?>

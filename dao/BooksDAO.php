@@ -7,81 +7,285 @@ use yii\db\Query;
 
 class BooksDAO
 {
-    public function findAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo)
+    private function filterByLanguage($lang)
     {
-
-        $wheresql = "";
-        $joinsql = "";
-
-        if (!($ph == null && $g == null && $l == null && $lo == null)) {
-
-            if ($g != null) {
-                $joinsql = " JOIN `tbl_book_genre` AS `bg` ON `b`.`book_id` = `bg`.`book_id` ";
-                if (empty($wheresql)) {
-                    $wheresql = $wheresql . "  WHERE ";
-                } else {
-                    $wheresql = $wheresql . " AND ";
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`lang` IN (" . implode(',', $lang) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
                 }
-                $wheresql = $wheresql . " `bg`.`genre_id` = :genre_id ";
             }
-
-            if ($ph != null) {
-                if (empty($wheresql)) {
-                    $wheresql = $wheresql . "  WHERE ";
-                } else {
-                    $wheresql = $wheresql . " AND ";
-                }
-                $wheresql = $wheresql . " `ph_id` = :ph_id ";
-            }
-            if ($l != null) {
-                if (empty($wheresql)) {
-                    $wheresql = $wheresql . " WHERE ";
-                } else {
-                    $wheresql = $wheresql . " AND ";
-                }
-                $wheresql = $wheresql . " `lang` = :lang ";
-            }
-            if ($lo != null) {
-                if (empty($wheresql)) {
-                    $wheresql = $wheresql . " WHERE ";
-                } else {
-                    $wheresql = $wheresql . " AND ";
-                }
-                $wheresql = $wheresql . " `orig_lang` = :orig_lang ";
-            }
+            return $books;
+        } else {
+            return array();
         }
+    }
 
+    private function filterByOriginLanguage($langor)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`orig_lang` IN (" . implode(',', $langor) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByPublishHouse($ph)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`ph_id` IN (" . implode(',', $ph) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterBySeries($ser)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`series_id` IN (" . implode(',', $ser) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByTranslator($trans)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`trans_id` IN (" . implode(',', $trans) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByGenre($g)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` JOIN `tbl_book_genre` AS `bg` ON `b`.`book_id` = `bg`.`book_id` WHERE `bg`.`genre_id` IN (" . implode(',', $g) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByAuthor($a)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` JOIN `tbl_book_author` AS `ba` ON `b`.`book_id` = `ba`.`book_id` WHERE `ba`.`author_id` IN (" . implode(',', $a) . ")";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByCountry($c)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` JOIN `tbl_book_author` AS `ba` ON `b`.`book_id` = `ba`.`book_id` WHERE `ba`.`author_id` IN (SELECT `a`.`author_id` FROM `tbl_authors` AS `a` WHERE `a`.`country` IN (" . implode(',', $c) . "))";
+        if ($data = Yii::$app->db->createCommand($sql)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterByYear($year, $yeq)
+    {
+        $sql = "SELECT `b`.`book_id` FROM `tbl_books` AS `b` WHERE `b`.`year` ";
+        if(isset($yeq)) {
+            if($yeq == 'b') $sql .= " < ";
+            elseif($yeq == 'a') $sql .= " > ";
+            else $sql .= " = ";
+        } else {
+            $sql .= " = ";
+        }
+        $sql .= " :year ";
+        if ($data = Yii::$app->db->createCommand($sql)->bindValue(':year', $year)->queryAll()) {
+            foreach ($data as $array) {
+                foreach ($array as $value) {
+                    $books[] = $value;
+                }
+            }
+            return $books;
+        } else {
+            return array();
+        }
+    }
+
+    private function filterBooks($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
+    {
+        if (!(empty($a) && empty($ph) && empty($g) && empty($c) && empty($lang) && empty($langor)
+            && $year == null && empty($ser) && empty($trans))) {
+            $books = array();
+
+            if (!empty($lang)) {
+                if (empty($booksLang = self::filterByLanguage($lang))) {
+                    return array();
+                } else {
+                    $books[] = $booksLang;
+                }
+            }
+            if (!empty($langor)) {
+                if (empty($booksLangOrig = self::filterByOriginLanguage($langor))) {
+                    return array();
+                } else {
+                    $books[] = $booksLangOrig;
+                }
+            }
+            if (!empty($g)) {
+                if (empty($booksGenre = self::filterByGenre($g))) {
+                    return array();
+                } else {
+                    $books[] = $booksGenre;
+                }
+            }
+            if (!empty($ph)) {
+                if (empty($booksPublishHouse = self::filterByPublishHouse($ph))) {
+                    return array();
+                } else {
+                    $books[] = $booksPublishHouse;
+                }
+            }
+            if (!empty($c)) {
+                if (empty($booksCountry = self::filterByCountry($c))) {
+                    return array();
+                } else {
+                    $books[] = $booksCountry;
+                }
+            }
+            if ($year != null) {
+                if (empty($booksYear = self::filterByYear($year, $yeq))) {
+                    return array();
+                } else {
+                    $books[] = $booksYear;
+                }
+            }
+            if (!empty($a)) {
+                if (empty($booksAuthor = self::filterByAuthor($a))) {
+                    return array();
+                } else {
+                    $books[] = $booksAuthor;
+                }
+            }
+            if (!empty($ser)) {
+                if (empty($booksSeries = self::filterBySeries($ser))) {
+                    return array();
+                } else {
+                    $books[] = $booksSeries;
+                }
+            }
+            if (!empty($trans)) {
+                if (empty($booksTranslator = self::filterByTranslator($trans))) {
+                    return array();
+                } else {
+                    $books[] = $booksTranslator;
+                }
+            }
+            if(count($books) > 1) {
+                $result = array_intersect($books[0], $books[1]);
+                for($i = 2; $i < count($books); $i++) {
+                    $result = array_intersect($result, $books[$i]);
+                }
+                return $result;
+            } else {
+                return $books[0];
+            }
+        } else {
+            return array();
+        }
+    }
+
+    private function prepareOrdering($sort, $ord) {
         $sortsql = " ORDER BY ";
         if ($sort == 'title') {
-            ($ord == 'asc') ? $sortBy = $sortsql = $sortsql . " `b`.`title` ASC " : $sortsql = $sortsql . " `b`.`title` DESC ";
+            $sortsql .= ($ord == 'asc') ? " `b`.`title` ASC " : " `b`.`title` DESC ";
+        } elseif ($sort == 'rating') {
+            $sortsql .= ($ord == 'asc') ? " `b`.`rating` ASC " : " `b`.`rating` DESC ";
         } elseif ($sort == 'year') {
-            ($ord == 'asc') ? $sortsql = $sortsql . " `b`.`year` ASC " : $sortsql = $sortsql . " `b`.`year` DESC ";
+            $sortsql .= ($ord == 'asc') ? " `b`.`year` ASC " : " `b`.`year` DESC ";
+        } elseif ($sort == 'pages') {
+            $sortsql .= ($ord == 'asc') ? " `b`.`pages` ASC " : " `b`.`pages` DESC ";
+        } elseif ($sort == 'circ') {
+            $sortsql .= ($ord == 'asc') ? " `b`.`circ` ASC " : " `b`.`circ` DESC ";
         } else {
-            $sortsql = $sortsql . " `b`.`year` DESC ";
+            $sortsql .= " `b`.`year` DESC ";
+        }
+        return $sortsql;
+    }
+
+    public function findAllBooks($pages, $sort, $ord, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
+    {
+        $sql = "SELECT `b`.`book_id`, `b`.`title` FROM `tbl_books` AS `b` ";
+
+        if (!(empty($a) && empty($ph) && empty($g) && empty($c) && empty($lang) && empty($langor)
+            && $year == null && empty($ser) && empty($trans))) {
+            if (!empty($books = self::filterBooks($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans))) {
+                $sql .= " WHERE `b`.`book_id` IN (" . implode(',', $books) . ")";
+            } else {
+                return array();
+            }
         }
 
-        $sql = "SELECT `b`.`book_id`, `b`.`title` FROM `tbl_books` AS `b` "
-            . $joinsql . $wheresql . $sortsql
-            . " LIMIT :limit OFFSET :offset ";
+        $sql .= self::prepareOrdering($sort, $ord) . " LIMIT :limit OFFSET :offset ";
+        file_put_contents('log.txt', var_export($sql, true), FILE_APPEND);
+        return Yii::$app->db->createCommand($sql)
+            ->bindValue(':limit', $pages->limit)
+            ->bindValue(':offset', $pages->offset)
+            ->queryAll();
+    }
 
-        $command = Yii::$app->db->createCommand($sql);
+    public function findBooksCountByParams($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
+    {
+        $sql = "SELECT COUNT(`b`.`book_id`) AS `count` FROM `tbl_books` AS `b` ";
 
-        if ($g != null) {
-            $command->bindValue(':genre_id', $g);
+        if (!(empty($a) && empty($ph) && empty($g) && empty($c) && empty($lang) && empty($langor)
+            && $year == null && empty($ser) && empty($trans))) {
+            if (!empty($books = self::filterBooks($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans))) {
+                $sql .= " WHERE `b`.`book_id` IN (" . implode(',', $books) . ")";
+            } else {
+                return 0;
+            }
         }
-        if ($ph != null) {
-            $command->bindValue(':ph_id', $ph);
-        }
-        if ($l != null) {
-            $command->bindValue(':lang', $l);
-        }
-        if ($lo != null) {
-            $command->bindValue(':orig_lang', $lo);
-        }
-        return $command
-        ->bindValue(':limit', $pages->limit)
-        ->bindValue(':offset', $pages->offset)
-        ->queryAll();
+        $data = Yii::$app->db->createCommand($sql)->queryOne();
+        return $data['count'];
     }
 
     public function findBookByID($id)
@@ -93,48 +297,6 @@ class BooksDAO
         ->addParams([':id' => $id])
         ->limit(1)
         ->one();
-    }
-
-    public function findAllBooksByAuthorID($id, $pages, $sort, $ord)
-    {
-        if ($sort == 'title') {
-            ($ord == 'asc') ? $sortBy = 'title ASC' : $sortBy = 'title DESC';
-        } else {
-            $sortBy = 'title ASC';
-        }
-
-        return (new Query())
-        ->select('*')
-        ->from('tbl_books as b')
-        ->join('JOIN', 'tbl_book_author as ab', 'b.book_id = ab.book_id')
-        ->join('JOIN', 'tbl_authors as a', 'ab.author_id = a.author_id')
-        ->where('ab.author_id = :id')
-        ->addParams([':id' => $id])
-        ->offset($pages->offset)
-        ->limit($pages->limit)
-        ->orderBy($sortBy)
-        ->all();
-    }
-
-    public function findBooksCountByParams($c, $ph, $g, $l, $lo)
-    {
-        $c != null ? $countryName = "c.iso = '" . $c . "'" : $countryName = 1;
-
-        return (new Query())
-        ->select('*')
-        ->from('tbl_books')
-        ->count();
-    }
-
-    public function findBooksCountByAuthorId($id)
-    {
-        return (new Query())
-        ->select('book_id')
-        ->from('tbl_book_author')
-        ->where('author_id = :id')
-        ->addParams([':id' => $id])
-        ->distinct()
-        ->count();
     }
 
     public function findMostPopularBooksByAuthorID($id, $amount)

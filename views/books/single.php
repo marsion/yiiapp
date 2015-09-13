@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php if (!empty($book->lang)) { ?>
-                                        <a href="<?php echo Yii::$app->homeUrl . 'books?l=' . $book->lang->id; ?>">
+                                        <a href="<?php echo Yii::$app->homeUrl . 'books?lang[]=' . $book->lang->id; ?>">
                                             <?php echo $book->lang->name; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php if (!empty($book->origLang)) { ?>
-                                        <a href="<?php echo Yii::$app->homeUrl . 'books?lo=' . $book->origLang->id; ?>">
+                                        <a href="<?php echo Yii::$app->homeUrl . 'books?langor[]=' . $book->origLang->id; ?>">
                                             <?php echo $book->origLang->name; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php  if (!empty($book->publishingHouse)) { ?>
-                                        <a href="<?php echo Yii::$app->homeUrl . 'books?ph=' . $book->publishingHouse->id; ?>">
+                                        <a href="<?php echo Yii::$app->homeUrl . 'books?ph[]=' . $book->publishingHouse->id; ?>">
                                             <?php echo $book->publishingHouse->name; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
@@ -185,7 +185,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php if (!empty($book->year)) { ?>
-                                        <?php echo $book->year; ?>
+                                    <a href="<?php echo Yii::$app->homeUrl . 'books?yeq=e&year=' . $book->year; ?>">
+                                        <?php echo $book->year; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
                                     <?php } ?>
@@ -199,7 +200,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php if (count($book->series) > 0) { ?>
-                                        <?php echo $book->series->name; ?>
+                                    <a href="<?php echo Yii::$app->homeUrl . 'books?ser[]=' . $book->series->id; ?>">
+                                        <?php echo $book->series->name; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
                                     <?php } ?>
@@ -213,7 +215,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td class="product-card-value">
                                     <?php if (count($book->translator) > 0) { ?>
-                                        <?php echo $book->translator->name; ?>
+                                    <a href="<?php echo Yii::$app->homeUrl . 'books?trans[]=' . $book->translator->id; ?>">
+                                        <?php echo $book->translator->name; ?></a>
                                     <?php } else { ?>
                                         <?php echo "-"; ?>
                                     <?php } ?>
@@ -241,7 +244,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td class="product-card-value">
                                     <?php if (count($book->genres) > 0) { ?>
                                         <?php for ($i = 0; $i < count($book->genres); $i++) { ?>
-                                            <a href="<?php echo Yii::$app->homeUrl . 'books?g=' . $book->genres[$i]->id; ?>">
+                                            <a href="<?php echo Yii::$app->homeUrl . 'books?g[]=' . $book->genres[$i]->id; ?>">
                                                 <?php echo $book->genres[$i]->name; ?>
                                             </a>
                                             <?php if ((count($book->genres) > 1) && ($i < count($book->genres) - 1)) echo ', ';
@@ -268,19 +271,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div id="sidebar-right-content">
 
-        <!--<div class="box">
 
-            <div class="box_title">Категорії</div>
-            <?php /*if (count($genres) > 1) { */ ?>
-                <div class="box_content">
-                    <ul>
-                        <?php /*foreach ($genres as $genre) { */ ?>
-                            <li><a href="#"><?php /*echo $genre['text']; */ ?></a></li>
-                        <?php /*} */ ?>
-                    </ul>
-                </div>
-            <?php /*} */ ?>
-        </div>-->
 
         <div class="box">
 

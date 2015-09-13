@@ -14,19 +14,14 @@ class BookServices {
         return new BooksDAO();
     }
 
-    public function getBooksCountByParams($c, $ph, $g, $l, $lo)
+    public function getBooksCountByParams($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
     {
-        return self::dao()->findBooksCountByParams($c, $ph, $g, $l, $lo);
+        return self::dao()->findBooksCountByParams($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans);
     }
 
-    public function getBooksCountByAuthorId($id)
+    public function getAllBooks($pages, $sort, $ord, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
     {
-        return self::dao()->findBooksCountByAuthorId($id);
-    }
-
-    public function getAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo)
-    {
-        if($data = self::dao()->findAllBooks($pages, $sort, $ord, $c, $ph, $g, $l, $lo)) {
+        if($data = self::dao()->findAllBooks($pages, $sort, $ord, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)) {
 
             foreach ($data as $row) {
                 $book = new BookModel();
@@ -67,28 +62,6 @@ class BookServices {
             return $book;
         } else {
             throw new NotFoundHttpException('Sorry, but the requested page does not exist!');
-        }
-    }
-
-    public function getAllBooksByAuthorID($id, $pages, $sort, $ord) {
-        if($data = self::dao()->findAllBooksByAuthorID($id, $pages, $sort, $ord)) {
-
-            foreach ($data as $row) {
-
-                $book = new BookModel();
-                $book->id = $row['book_id'];
-                $book->title = $row['title'];
-                $book->description = mb_substr($row['description'], 0, mb_strrpos(mb_substr($row['description'],
-                        0, 500, 'utf-8'), ' ', 'utf-8'), 'utf-8') . ' ...';
-
-                $book->authors = self::authorServices()->getAuthorsByBookID($row['book_id']);
-                $book->img = self::imgServices()->getImageByBookId($row['book_id']);
-
-                $books[] = $book;
-            }
-            return $books;
-        } else {
-            return array();
         }
     }
 
@@ -135,18 +108,18 @@ class BookServices {
     public function getYearOfFirstBookByAuthorId($id)
     {
         if($row = self::dao()->findYearOfFirstBookByAuthorId($id)) {
-            return $row['year'] != 0 ? $row['year'] : "-";
+            return $row['year'] != 0 ? $row['year'] : "";
         } else {
-            return "-";
+            return "";
         }
     }
 
     public function getYearOfLastBookByAuthorId($id)
     {
         if($row = self::dao()->findYearOfLastBookByAuthorId($id)) {
-            return $row['year'] != 0 ? $row['year'] : "-";
+            return $row['year'] != 0 ? $row['year'] : "";
         } else {
-            return "-";
+            return "";
         }
     }
 

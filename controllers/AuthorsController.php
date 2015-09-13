@@ -14,12 +14,21 @@ use Yii;
 class AuthorsController extends Controller
 {
 
-    public function actionList($sort = null, $ord = null, $c = null, $per = null)
+    public function actionList()
     {
-        $pages = self::paginate($c, $per);
+        $sort = Yii::$app->request->get('sort', null);
+        $ord = Yii::$app->request->get('ord', null);
+        $per = Yii::$app->request->get('per', null);
+        $c = Yii::$app->request->get('c', array());
+        $byear = Yii::$app->request->get('byear', null);
+        $byeq = Yii::$app->request->get('byeq', null);
+        $dyear = Yii::$app->request->get('dyear', null);
+        $dyeq = Yii::$app->request->get('dyeq', null);
+
+        $pages = self::paginate($per, $c, $byear, $byeq, $dyear, $dyeq);
         $countryOptions = self::countryServices()->getFilterOptionsCountries();
 
-        $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $c);
+        $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $c, $byear, $byeq, $dyear, $dyeq);
         return $this->render('list', ['authors' => $authorModels,
             'pages' => $pages, 'countryOptions' => $countryOptions]);
     }
@@ -32,16 +41,6 @@ class AuthorsController extends Controller
         $genres = self::genreServices()->getFilterOptionsGenres();
         return $this->render('single', ['id' => $id, 'author' => $authorModel, 'genres' => $genres,
             'popularBooks' => $popularBooks, 'usersChoiceBooks' => $usersChoiceBooks]);
-    }
-
-    public function actionBooks($id, $sort = null, $ord = null, $per = null)
-    {
-        $pages = self::paginateByAuthorId($id, $per);
-        $author = self::services()->getAuthorForAllHisBooks($id);
-        $genres = self::genreServices()->getFilterOptionsGenres();
-        $bookModels = (new BookServices())->getAllBooksByAuthorID($id, $pages, $sort, $ord);
-        return $this->render('books', ['books' => $bookModels, 'pages' => $pages,
-            'author' => $author, 'genres' => $genres]);
     }
 
     protected function services()
@@ -64,20 +63,10 @@ class AuthorsController extends Controller
         return new GenreServices();
     }
 
-    protected function paginate($country, $per)
+    protected function paginate($per, $c, $byear, $byeq, $dyear, $dyeq)
     {
         $pagination = new Pagination(['totalCount' =>
-            self::services()->getAuthorsCountByCountryId($country),
-            'pageSize' => $per,
-            'defaultPageSize' => 30,
-        ]);
-        $pagination->pageSizeParam = false;
-        return $pagination;
-    }
-
-    protected function paginateByAuthorId($id, $per)
-    {
-        $pagination = new Pagination(['totalCount' => (new BookServices())->getBooksCountByAuthorId($id),
+            self::services()->getAuthorsCountByParams($c, $byear, $byeq, $dyear, $dyeq),
             'pageSize' => $per,
             'defaultPageSize' => 30,
         ]);

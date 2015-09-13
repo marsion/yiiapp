@@ -50,17 +50,6 @@ class CountryDAO
         ->count();
     }
 
-    public function findCountryRowByISO($iso)
-    {
-        return (new Query())
-        ->select('*')
-        ->from('tbl_countries')
-        ->where('iso = :iso')
-        ->addParams([':iso' => $iso])
-        ->limit(1)
-        ->one();
-    }
-
     public function findFilterOptionsCountries()
     {
         $sql = "SELECT `id`, `name` FROM `tbl_countries` WHERE `filter` = 1 ORDER BY `name` ASC";

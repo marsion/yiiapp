@@ -6,17 +6,16 @@ use app\helpers\MyBreadcrumbs;
 $this->title = 'Книги';
 $this->params['breadcrumbs'][] = $this->title;
 
-$sort = !empty($_GET['sort']) ? $_GET['sort'] : 'year';
-$ord = !empty($_GET['ord']) ? $_GET['ord'] : 'desc';
-$per = !empty($_GET['per']) ? $_GET['per'] : '30';
-$c = !empty($_GET['c']) ? $_GET['c'] : '';
-$l = !empty($_GET['l']) ? $_GET['l'] : '';
-$lo = !empty($_GET['lo']) ? $_GET['lo'] : '';
-$g = !empty($_GET['g']) ? $_GET['g'] : '';
-$ph = !empty($_GET['ph']) ? $_GET['ph'] : '';
-$y = !empty($_GET['y']) ? $_GET['y'] : '';
-$yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
-
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'year';
+$ord = isset($_GET['ord']) ? $_GET['ord'] : 'desc';
+$per = isset($_GET['per']) ? $_GET['per'] : '30';
+$c = isset($_GET['c']) ? $_GET['c'] : array();
+$lang = isset($_GET['lang']) ? $_GET['lang'] : array();
+$langor = isset($_GET['langor']) ? $_GET['langor'] : array();
+$g = isset($_GET['g']) ? $_GET['g'] : array();
+$ph = isset($_GET['ph']) ? $_GET['ph'] : array();
+$year = isset($_GET['year']) ? $_GET['year'] : '';
+$yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
 
 ?>
 <div id="sidebar-left" class="main-column">
@@ -158,8 +157,8 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
 
     <div id="sidebar-right-content">
         <form action="books" method="get">
-            <input type="hidden" name="g" value="<?php echo $g; ?>">
-            <input type="hidden" name="ph" value="<?php echo $ph; ?>">
+<!--            <input type="hidden" name="g[]" value="NULL">-->
+<!--            <input type="hidden" name="ph[]" value="NULL">-->
 
             <div class="box">
                 <div class="box_title">Фільтрувати</div>
@@ -167,12 +166,15 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
                     <div class="textHelper">відсортувати за:</div>
                     <select class="sort" name="sort" onchange="this.form.submit()">
                         <option value="title" <?php echo $sort == 'title' ? 'selected' : ''; ?>>назвою</option>
+                        <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю</option>
                         <option value="year" <?php echo $sort == 'year' ? 'selected' : ''; ?>>роком видання
+                        <option value="pages" <?php echo $sort == 'pages' ? 'selected' : ''; ?>>кількістю сторінок
+                        <option value="circ" <?php echo $sort == 'circ' ? 'selected' : ''; ?>>тиражем
                         </option>
                     </select>
 
                     <div class="col-container ord_container">
-                        <div class="textHelper">впорядкувати за:</div>
+                        <div class="textHelper">впорядкувати:</div>
                         <select class="ord" name="ord" onchange="this.form.submit()">
                             <option value="asc" <?php echo $ord == 'asc' ? 'selected' : ''; ?>>зростанням</option>
                             <option value="desc" <?php echo $ord == 'desc' ? 'selected' : ''; ?>>спаданням</option>
@@ -196,8 +198,8 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
                     <div class="box_content">
                         <?php foreach ($countryOptions as $countryOption) { ?>
                             <div>
-                                <input type="checkbox" name="c" value="<?php echo $countryOption->id; ?>"
-                                    <?php echo $c == $countryOption->id ? 'checked' : ''; ?>
+                                <input type="checkbox" name="c[]" value="<?php echo $countryOption->id; ?>"
+                                    <?php echo in_array($countryOption->id, $c) ? 'checked' : ''; ?>
                                        onchange="this.form.submit()"/>&nbsp;<?php echo $countryOption->name; ?>
                             </div>
                         <?php } ?>
@@ -225,7 +227,7 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
                                   onchange="this.form.submit()">після
                     </label>
 
-                    <input type="text" name="y" value="<?php echo $y; ?>" onsubmit="this.form.submit()">
+                    <input type="text" name="year" value="<?php echo $year; ?>" onsubmit="this.form.submit()">
                 </div>
             </div>
 
@@ -237,9 +239,9 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
                         <?php foreach ($langOptions as $langOption) { ?>
                             <div>
                                 <label>
-                                    <input type="checkbox" name="l" value="<?php echo $langOption->id; ?>"
-                                        <?php echo $l == $langOption->id ? 'checked' : ''; ?>
-                                           onchange="this.form.submit()"/>&nbsp;<?php echo $langOption->name; ?>
+                                    <input type="checkbox" name="lang[]" value="<?php echo $langOption->id; ?>"
+                                        <?php echo in_array($langOption->id, $lang) ? 'checked' : ''; ?>
+                                           onchange="this.form.submit()" />&nbsp;<?php echo $langOption->name; ?>
                                 </label>
                             </div>
                         <?php } ?>
@@ -258,8 +260,8 @@ $yeq = !empty($_GET['yeq']) ? $_GET['yeq'] : 'e';
                     <div class="box_content">
                         <?php foreach ($langOptions as $langOption) { ?>
                             <div>
-                                <input type="checkbox" name="lo" value="<?php echo $langOption->id; ?>"
-                                    <?php echo $lo == $langOption->id ? 'checked' : ''; ?>
+                                <input type="checkbox" name="langor[]" value="<?php echo $langOption->id; ?>"
+                                    <?php echo in_array($langOption->id, $langor) ? 'checked' : ''; ?>
                                        onchange="this.form.submit()"/>&nbsp;<?php echo $langOption->name; ?>
                             </div>
                         <?php } ?>
