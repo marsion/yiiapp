@@ -1,6 +1,7 @@
 <?php
 //$this->registerJs('alert("Hello world!")', $this::POS_LOAD, 'main-index');
 $this->registerJsFile('@web/js/sidebarmenu.js', ['position' => $this::POS_BEGIN], 'sidebarmenu');
+$this->registerJsFile('@web/js/countrypopup.js', ['position' => $this::POS_BEGIN], 'countrypopup');
 
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
@@ -221,7 +222,18 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
                         <?php } ?>
 
                         <div class="filter-helper">
-                            <a href="#">[ список всіх країн ]</a>
+                            <div id="countryPopupContainer" >
+                                <div id="countryPopupButton" >[ список всіх країн ]</div>
+                                <div id="countryPopup" >
+                                    <?php foreach ($countryOptions as $countryOption) { ?>
+                                        <div>
+                                            <input type="checkbox" name="c[]" value="<?php echo $countryOption->id; ?>"
+                                                <?php echo in_array($countryOption->id, $c) ? 'checked' : ''; ?>
+                                                   onchange="this.form.submit()"/>&nbsp;<?php echo $countryOption->name; ?>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>
@@ -243,7 +255,7 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
                                   onchange="this.form.submit()">після
                     </label>
 
-                    <input type="text" name="byear" value="<?php echo $byear; ?>" onsubmit="this.form.submit()">
+                    <input type="text" name="byear" value="<?php echo $byear; ?>" onkeyup="this.form.submit()">
                 </div>
             </div>
 
@@ -263,7 +275,7 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
                                   onchange="this.form.submit()">після
                     </label>
 
-                    <input type="text" name="dyear" value="<?php echo $dyear; ?>" onsubmit="this.form.submit()">
+                    <input type="text" name="dyear" value="<?php echo $dyear; ?>" onkeyup="this.form.submit()">
                 </div>
             </div>
         </form>

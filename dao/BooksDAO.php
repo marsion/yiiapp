@@ -220,11 +220,7 @@ class BooksDAO
                 }
             }
             if(count($books) > 1) {
-                $result = array_intersect($books[0], $books[1]);
-                for($i = 2; $i < count($books); $i++) {
-                    $result = array_intersect($result, $books[$i]);
-                }
-                return $result;
+                return call_user_func_array('array_intersect', $books);
             } else {
                 return $books[0];
             }
@@ -274,18 +270,18 @@ class BooksDAO
 
     public function findBooksCountByParams($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
     {
-        $sql = "SELECT COUNT(`b`.`book_id`) AS `count` FROM `tbl_books` AS `b` ";
-
         if (!(empty($a) && empty($ph) && empty($g) && empty($c) && empty($lang) && empty($langor)
             && $year == null && empty($ser) && empty($trans))) {
             if (!empty($books = self::filterBooks($a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans))) {
-                $sql .= " WHERE `b`.`book_id` IN (" . implode(',', $books) . ")";
+                return count($books);
             } else {
                 return 0;
             }
+        } else {
+            $sql = "SELECT COUNT(`b`.`book_id`) AS `count` FROM `tbl_books` AS `b` ";
+            $data = Yii::$app->db->createCommand($sql)->queryOne();
+            return $data['count'];
         }
-        $data = Yii::$app->db->createCommand($sql)->queryOne();
-        return $data['count'];
     }
 
     public function findBookByID($id)

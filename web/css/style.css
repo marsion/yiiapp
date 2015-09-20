@@ -833,3 +833,26 @@ ul.catalog-pagination li a, ul.catalog-pagination li span {
     font-weight: bold;
     margin:15px 0 25px;
 }
+#countryPopupButton {
+    background-color: #f9f9f8;
+    padding: 4px 8px;
+    border-color: #CCB;
+    border-style: solid;
+    border-width: 4px;
+}
+#countryPopupContainer{
+    position: relative;
+}
+#countryPopup{
+    width:250px;
+    height:500px;
+    background-color: #FFF;
+    border-color: #e2e2d9;
+    border-style: solid;
+    border-width: 4px;
+    font: normal 0.9em Verdana,sans-serif;
+    padding: 4px;
+    display:none;
+    position:absolute;
+    overflow-y: auto;
+}

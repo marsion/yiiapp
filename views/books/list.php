@@ -227,7 +227,7 @@ $yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
                                   onchange="this.form.submit()">після
                     </label>
 
-                    <input type="text" name="year" value="<?php echo $year; ?>" onsubmit="this.form.submit()">
+                    <input type="text" name="year" value="<?php echo $year; ?>" onkeyup="this.form.submit()">
                 </div>
             </div>
 

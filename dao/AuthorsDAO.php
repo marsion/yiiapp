@@ -94,13 +94,8 @@ class AuthorsDAO
                     $authors[] = $authorsDeathYear;
                 }
             }
-            //array_intersect
             if(count($authors) > 1) {
-                $result = array_intersect($authors[0], $authors[1]);
-                for($i = 2; $i < count($authors); $i++) {
-                    $result = array_intersect($result, $authors[$i]);
-                }
-                return $result;
+                return call_user_func_array('array_intersect', $authors);
             } else {
                 return $authors[0];
             }
@@ -144,16 +139,18 @@ class AuthorsDAO
 
     public function findAuthorsCountByParams($c, $byear, $byeq, $dyear, $dyeq)
     {
-        $sql = "SELECT COUNT(`a`.`author_id`) AS `count` FROM `tbl_authors` AS `a` ";
         if (!(empty($c) && $byear == null && $dyear == null)) {
             if (!empty($authors = self::filterAuthors($c, $byear, $byeq, $dyear, $dyeq))) {
-                $sql .= " WHERE `a`.`author_id` IN (" . implode(',', $authors) . ")";
+                return count($authors);
             } else {
                 return 0;
             }
+        } else {
+            $sql = "SELECT COUNT(`a`.`author_id`) AS `count` FROM `tbl_authors` AS `a` ";
+            $data = Yii::$app->db->createCommand($sql)->queryOne();
+            return $data['count'];
         }
-        $data = Yii::$app->db->createCommand($sql)->queryOne();
-        return $data['count'];
+
     }
 
     public function findAuthorById($id)
