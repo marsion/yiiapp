@@ -1,4 +1,7 @@
 <?php
+
+$this->registerJsFile('@web/js/filterpopup.js', ['position' => $this::POS_BEGIN], 'filterpopup');
+
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
 use app\helpers\MyBreadcrumbs;
@@ -103,11 +106,11 @@ $yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
 
         </div>
         <div class="books_list">
-            <div class="filt-sort-pan">
-                Знайдено книг:
-            </div>
-
-            <div class="content_separator"></div>
+<!--            <div class="filt-sort-pan">-->
+<!--                Знайдено книг:-->
+<!--            </div>-->
+<!---->
+<!--            <div class="content_separator"></div>-->
 
             <?php if (count($books) > 0) { ?>
                 <div class="catalog">
@@ -163,7 +166,7 @@ $yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
             <div class="box">
                 <div class="box_title">Фільтрувати</div>
                 <div class="box_content">
-                    <div class="textHelper">відсортувати за:</div>
+                    <div class="textHelper">відсортувати книги за:</div>
                     <select class="sort" name="sort" onchange="this.form.submit()">
                         <option value="title" <?php echo $sort == 'title' ? 'selected' : ''; ?>>назвою</option>
                         <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю</option>
@@ -196,16 +199,33 @@ $yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
                     <div class="box_title">Країна</div>
 
                     <div class="box_content">
-                        <?php foreach ($countryOptions as $countryOption) { ?>
+                        <?php for ($i = 0; $i < 10; $i++) { ?>
                             <div>
-                                <input type="checkbox" name="c[]" value="<?php echo $countryOption->id; ?>"
-                                    <?php echo in_array($countryOption->id, $c) ? 'checked' : ''; ?>
-                                       onchange="this.form.submit()"/>&nbsp;<?php echo $countryOption->name; ?>
+                                <input type="checkbox" name="c[]" value="<?php echo $countryOptions[$i]->id; ?>"
+                                    <?php echo in_array($countryOptions[$i]->id, $c) ? 'checked' : ''; ?>
+                                       onchange="this.form.submit()"/>&nbsp;<?php echo $countryOptions[$i]->name; ?>
                             </div>
                         <?php } ?>
 
                         <div class="filter-helper">
-                            <a href="#">[ список всіх країн ]</a>
+                            <div class="filterPopupContainer" >
+                                <div class="filterPopupButton" >[ інші країни ]</div>
+                                <div class="filterPopup" >
+                                    <div class="filterPopupTitlePane" >
+                                        <div class="filterPopupCloseIcon" ></div>
+                                        інші країни
+                                    </div>
+                                    <div class="filterPopupScroller" >
+                                        <?php for ($i = 10; $i < count($countryOptions); $i++) {  ?>
+                                            <div>
+                                                <input type="checkbox" name="c[]" value="<?php echo $countryOptions[$i]->id; ?>"
+                                                    <?php echo in_array($countryOptions[$i]->id, $c) ? 'checked' : ''; ?>
+                                                       onchange="this.form.submit()"/>&nbsp;<?php echo $countryOptions[$i]->name; ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>
@@ -236,38 +256,72 @@ $yeq = isset($_GET['yeq']) ? $_GET['yeq'] : 'e';
                 <?php if (count($langOptions) > 0) { ?>
                     <div class="box_title">Мова</div>
                     <div class="box_content">
-                        <?php foreach ($langOptions as $langOption) { ?>
+                        <?php for ($i = 0; $i < 10; $i++) { ?>
                             <div>
                                 <label>
-                                    <input type="checkbox" name="lang[]" value="<?php echo $langOption->id; ?>"
-                                        <?php echo in_array($langOption->id, $lang) ? 'checked' : ''; ?>
-                                           onchange="this.form.submit()" />&nbsp;<?php echo $langOption->name; ?>
+                                    <input type="checkbox" name="lang[]" value="<?php echo $langOptions[$i]->id; ?>"
+                                        <?php echo in_array($langOptions[$i]->id, $lang) ? 'checked' : ''; ?>
+                                           onchange="this.form.submit()" />&nbsp;<?php echo $langOptions[$i]->name; ?>
                                 </label>
                             </div>
                         <?php } ?>
 
                         <div class="filter-helper">
-                            <a href="#">[ список всіх мов ]</a>
+                            <div class="filterPopupContainer" >
+                                <div class="filterPopupButton" >[ інші мови ]</div>
+                                <div class="filterPopup" >
+                                    <div class="filterPopupTitlePane" >
+                                        <div class="filterPopupCloseIcon" ></div>
+                                        інші мови
+                                    </div>
+                                    <div class="filterPopupScroller" >
+                                        <?php for ($i = 10; $i < count($langOptions); $i++) {  ?>
+                                            <div>
+                                                <input type="checkbox" name="lang[]" value="<?php echo $langOptions[$i]->id; ?>"
+                                                    <?php echo in_array($langOptions[$i]->id, $lang) ? 'checked' : ''; ?>
+                                                       onchange="this.form.submit()"/>&nbsp;<?php echo $langOptions[$i]->name; ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>
             </div>
 
             <div class="box">
-                <?php if (count($langOptions) > 0) { ?>
+                <?php if (count($langOrigOptions) > 0) { ?>
                     <div class="box_title">Мова оригіналу</div>
 
                     <div class="box_content">
-                        <?php foreach ($langOptions as $langOption) { ?>
+                        <?php for ($i = 0; $i < 10; $i++) { ?>
                             <div>
-                                <input type="checkbox" name="langor[]" value="<?php echo $langOption->id; ?>"
-                                    <?php echo in_array($langOption->id, $langor) ? 'checked' : ''; ?>
-                                       onchange="this.form.submit()"/>&nbsp;<?php echo $langOption->name; ?>
+                                <input type="checkbox" name="langor[]" value="<?php echo $langOrigOptions[$i]->id; ?>"
+                                    <?php echo in_array($langOrigOptions[$i]->id, $langor) ? 'checked' : ''; ?>
+                                       onchange="this.form.submit()"/>&nbsp;<?php echo $langOrigOptions[$i]->name; ?>
                             </div>
                         <?php } ?>
 
                         <div class="filter-helper">
-                            <a href="#">[ список всіх мов ]</a>
+                            <div class="filterPopupContainer" >
+                                <div class="filterPopupButton" >[ інші мови ]</div>
+                                <div class="filterPopup" >
+                                    <div class="filterPopupTitlePane" >
+                                        <div class="filterPopupCloseIcon" ></div>
+                                        інші мови
+                                    </div>
+                                    <div class="filterPopupScroller" >
+                                        <?php for ($i = 10; $i < count($langOrigOptions); $i++) {  ?>
+                                            <div>
+                                                <input type="checkbox" name="langor[]" value="<?php echo $langOrigOptions[$i]->id; ?>"
+                                                    <?php echo in_array($langOrigOptions[$i]->id, $langor) ? 'checked' : ''; ?>
+                                                       onchange="this.form.submit()"/>&nbsp;<?php echo $langOrigOptions[$i]->name; ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>

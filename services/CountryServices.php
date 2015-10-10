@@ -29,9 +29,9 @@ class CountryServices {
         return new CountryDAO();
     }
 
-    public function getFilterOptionsCountries()
+    public function getFilterOptionsCountries($c)
     {
-        if ($data = self::dao()->findFilterOptionsCountries()) {
+        if ($data = self::dao()->findFilterOptionsCountries($c)) {
             foreach ($data as $row) {
                 $country = new CountryModel();
                 $country->id = $row['id'];
@@ -39,7 +39,6 @@ class CountryServices {
 
                 $countries[] = $country;
             }
-
             return $countries;
         } else {
             return array();

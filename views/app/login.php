@@ -134,19 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div id="sidebar-right-content">
 
-        <div class="box">
 
-            <div class="box_title">Категорії</div>
-            <?php if (count($genres) > 1) { ?>
-                <div class="box_content">
-                    <ul>
-                        <?php foreach ($genres as $genre) { ?>
-                            <li><a href="#"><?php echo $genre['text']; ?></a></li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            <?php } ?>
-        </div>
 
         <div class="box">
 

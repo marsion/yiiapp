@@ -11,12 +11,12 @@ function dump(obj) {
 };
 
 $(document).ready(function () {
-    $('#countryPopupButton').click(function () {
-        if ($('#countryPopup').is(':visible')) {
-            $('#countryPopup').fadeOut();
+    $('.filterPopupButton').click(function () {
+        if ($('.filterPopup').is(':visible')) {
+            $('.filterPopup').fadeOut();
         } else {
-            var popup = $('#countryPopup');
-            var button = $('#countryPopupButton');
+            var popup = $('.filterPopup');
+            var button = $('.filterPopupButton');
             var popupHeight = popup.outerHeight();
             var buttonHeight = button.outerHeight();
             var normalTop = popupHeight / 2 - buttonHeight / 2;
@@ -41,4 +41,12 @@ $(document).ready(function () {
     });
 
 
+});
+
+$(document).ready(function () {
+    $('.filterPopupCloseIcon').click(function () {
+        if ($('.filterPopup').is(':visible')) {
+            $('.filterPopup').fadeOut();
+        }
+    })
 });

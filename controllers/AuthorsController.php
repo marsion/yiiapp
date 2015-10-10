@@ -8,6 +8,7 @@ use app\services\AuthorServices;
 use app\services\BookServices;
 use app\services\GenreServices;
 use app\services\CountryServices;
+use app\services\CommentServices;
 use yii\data\Pagination;
 use Yii;
 
@@ -26,7 +27,7 @@ class AuthorsController extends Controller
         $dyeq = Yii::$app->request->get('dyeq', null);
 
         $pages = self::paginate($per, $c, $byear, $byeq, $dyear, $dyeq);
-        $countryOptions = self::countryServices()->getFilterOptionsCountries();
+        $countryOptions = self::countryServices()->getFilterOptionsCountries($c);
 
         $authorModels = self::services()->getAllAuthors($pages, $sort, $ord, $c, $byear, $byeq, $dyear, $dyeq);
         return $this->render('list', ['authors' => $authorModels,
@@ -38,9 +39,12 @@ class AuthorsController extends Controller
         $authorModel = self::services()->getAuthorByID($id);
         $popularBooks = self::bookServices()->getMostPopularBooksByAuthorID($id, 5);
         $usersChoiceBooks = self::bookServices()->getUsersChoiceBooksByAuthorID($id, 5);
+        $pages = self::paginateComments($id);
+        $comments = self::commentServices()->findCommentsForAuthor($pages, $id);
         $genres = self::genreServices()->getFilterOptionsGenres();
         return $this->render('single', ['id' => $id, 'author' => $authorModel, 'genres' => $genres,
-            'popularBooks' => $popularBooks, 'usersChoiceBooks' => $usersChoiceBooks]);
+            'popularBooks' => $popularBooks, 'usersChoiceBooks' => $usersChoiceBooks,
+            'comments' => $comments, 'pages' => $pages]);
     }
 
     protected function services()
@@ -63,6 +67,11 @@ class AuthorsController extends Controller
         return new GenreServices();
     }
 
+    protected function commentServices()
+    {
+        return new CommentServices();
+    }
+
     protected function paginate($per, $c, $byear, $byeq, $dyear, $dyeq)
     {
         $pagination = new Pagination(['totalCount' =>
@@ -70,6 +79,16 @@ class AuthorsController extends Controller
             'pageSize' => $per,
             'defaultPageSize' => 30,
         ]);
+        $pagination->pageSizeParam = false;
+        return $pagination;
+    }
+
+    protected function paginateComments($id)
+    {
+        $pagination = new Pagination(
+            ['totalCount' => self::commentServices()->getAuthorCommentsCount($id),
+                'defaultPageSize' => 2,
+            ]);
         $pagination->pageSizeParam = false;
         return $pagination;
     }

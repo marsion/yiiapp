@@ -50,10 +50,22 @@ class CountryDAO
         ->count();
     }
 
-    public function findFilterOptionsCountries()
+    public function findFilterOptionsCountries($c)
     {
-        $sql = "SELECT `id`, `name` FROM `tbl_countries` WHERE `filter` = 1 ORDER BY `name` ASC";
-        return Yii::$app->db->createCommand($sql)->queryAll();
+        if(empty($c)) {
+            $sql = "SELECT `id`, `name` FROM `tbl_countries` ORDER BY `name` ASC";
+            return Yii::$app->db->createCommand($sql)->queryAll();
+        } else {
+            $sql = "SELECT `id`, `name` FROM `tbl_countries` AS `c` WHERE `c`.`id` IN ("
+                . implode(',', $c) . ") ORDER BY `name`";
+            $selectedData = Yii::$app->db->createCommand($sql)->queryAll();
+            $sql = "SELECT `id`, `name` FROM `tbl_countries` AS `c` WHERE `c`.`id` NOT IN ("
+                . implode(',', $c) . ") ORDER BY `name` ";
+            $additionalData = Yii::$app->db->createCommand($sql)->queryAll();
+            $selectedData = array_merge($selectedData, $additionalData);
+
+        }
+        return $selectedData;
     }
 }
 

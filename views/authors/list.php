@@ -1,7 +1,7 @@
 <?php
 //$this->registerJs('alert("Hello world!")', $this::POS_LOAD, 'main-index');
 $this->registerJsFile('@web/js/sidebarmenu.js', ['position' => $this::POS_BEGIN], 'sidebarmenu');
-$this->registerJsFile('@web/js/countrypopup.js', ['position' => $this::POS_BEGIN], 'countrypopup');
+$this->registerJsFile('@web/js/filterpopup.js', ['position' => $this::POS_BEGIN], 'filterpopup');
 
 use yii\helpers\Html;
 use app\helpers\CatalogLinkPager;
@@ -129,11 +129,11 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
         </div>
         <div class="authors_list">
 
-            <div class="filt-sort-pan">
-                Знайдено авторів:
-            </div>
-
-            <div class="content_separator"></div>
+<!--            <div class="filt-sort-pan">-->
+<!--                Знайдено авторів:-->
+<!--            </div>-->
+<!---->
+<!--            <div class="content_separator"></div>-->
 
             <?php if (count($authors) > 0) { ?>
 
@@ -182,7 +182,7 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
             <div class="box">
                 <div class="box_title">Фільтрувати</div>
                 <div class="box_content">
-                    <div class="textHelper">відсортувати за:</div>
+                    <div class="textHelper">відсортувати авторів за:</div>
                     <select class="sort" name="sort" onchange="this.form.submit()">
                         <option value="name" <?php echo $sort == 'name' ? 'selected' : ''; ?>>ім’ям</option>
                         <option value="rating" <?php echo $sort == 'rating' ? 'selected' : ''; ?>>популярністю
@@ -213,25 +213,31 @@ $dyeq = isset($_GET['dyeq']) ? $_GET['dyeq'] : 'e';
                     <div class="box_title">Країна</div>
 
                     <div class="box_content">
-                        <?php foreach ($countryOptions as $countryOption) { ?>
+                        <?php for ($i = 0; $i < 10; $i++) { ?>
                             <div>
-                                <input type="checkbox" name="c[]" value="<?php echo $countryOption->id; ?>"
-                                    <?php echo in_array($countryOption->id, $c) ? 'checked' : ''; ?>
-                                       onchange="this.form.submit()"/>&nbsp;<?php echo $countryOption->name; ?>
+                                <input type="checkbox" name="c[]" value="<?php echo $countryOptions[$i]->id; ?>"
+                                    <?php echo in_array($countryOptions[$i]->id, $c) ? 'checked' : ''; ?>
+                                       onchange="this.form.submit()"/>&nbsp;<?php echo $countryOptions[$i]->name; ?>
                             </div>
                         <?php } ?>
 
                         <div class="filter-helper">
-                            <div id="countryPopupContainer" >
-                                <div id="countryPopupButton" >[ список всіх країн ]</div>
-                                <div id="countryPopup" >
-                                    <?php foreach ($countryOptions as $countryOption) { ?>
+                            <div class="filterPopupContainer" >
+                                <div class="filterPopupButton" >[ список всіх країн ]</div>
+                                <div class="filterPopup" >
+                                    <div class="filterPopupTitlePane" >
+                                        <div class="filterPopupCloseIcon" ></div>
+                                        всі країни
+                                    </div>
+                                    <div class="filterPopupScroller" >
+                                    <?php for ($i = 10; $i < count($countryOptions); $i++) {  ?>
                                         <div>
-                                            <input type="checkbox" name="c[]" value="<?php echo $countryOption->id; ?>"
-                                                <?php echo in_array($countryOption->id, $c) ? 'checked' : ''; ?>
-                                                   onchange="this.form.submit()"/>&nbsp;<?php echo $countryOption->name; ?>
+                                            <input type="checkbox" name="c[]" value="<?php echo $countryOptions[$i]->id; ?>"
+                                                <?php echo in_array($countryOptions[$i]->id, $c) ? 'checked' : ''; ?>
+                                                   onchange="this.form.submit()"/>&nbsp;<?php echo $countryOptions[$i]->name; ?>
                                         </div>
                                     <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

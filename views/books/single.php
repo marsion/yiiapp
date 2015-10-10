@@ -92,6 +92,16 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="books_single">
             <div class="product-card">
+                <div class="product-card-title">
+                    <?php echo '"' . $book->title . '" - '; ?>
+                    <?php for ($i = 0; $i < count($book->authors); $i++) { ?>
+                        <a href="<?php echo Yii::$app->homeUrl . 'authors/' . $book->authors[$i]->id; ?>">
+                            <?php echo $book->authors[$i]->fullName; ?>
+                        </a>
+                        <?php if ((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', ';
+                    } ?>
+                </div>
+
                 <div class="product-card-box">
                     <div class="product-card-img">
                         <a class="img">
@@ -105,17 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="product-card-box">
-                    <div class="product-card-title">
-                        <?php echo '"' . $book->title . '"'; ?>
-                    </div>
-                    <div class="product-card-title">
-                        <?php for ($i = 0; $i < count($book->authors); $i++) { ?>
-                            <a href="<?php echo Yii::$app->homeUrl . 'authors/' . $book->authors[$i]->id; ?>">
-                                <?php echo $book->authors[$i]->fullName; ?>
-                            </a>
-                            <?php if ((count($book->authors) > 1) && ($i < count($book->authors) - 1)) echo ', ';
-                        } ?>
-                    </div>
+
 
                     <div class="product-card-details">
                         <table class="data_table">
@@ -263,6 +263,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
             </div>
+
+            <?php include_once("../views/layouts/comments.php"); ?>
+
         </div>
     </div>
 </div>

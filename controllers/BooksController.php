@@ -8,6 +8,7 @@ use app\services\BookServices;
 use app\services\GenreServices;
 use app\services\CountryServices;
 use app\services\LanguageServices;
+use app\services\CommentServices;
 use yii\data\Pagination;
 
 class BooksController extends Controller
@@ -30,21 +31,26 @@ class BooksController extends Controller
         $trans = Yii::$app->request->get('trans', array());
 
         $pages = self::paginate($per, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans);
-        $countryOptions = self::countryServices()->getFilterOptionsCountries();
-        $langOptions = self::languageServices()->getFilterOptionsLanguages();
+        $countryOptions = self::countryServices()->getFilterOptionsCountries($c);
+        $langOptions = self::languageServices()->getFilterOptionsLanguages($lang);
+        $langOrigOptions = self::languageServices()->getFilterOptionsLanguagesOrig($langor);
         $genres = self::genreServices()->getFilterOptionsGenres();
 
         $books = self::services()->getAllBooks($pages, $sort, $ord, $a, $c, $ph, $g,
             $lang, $langor, $year, $yeq, $ser, $trans);
         return $this->render('list', ['books' => $books, 'pages' => $pages,
-            'countryOptions' => $countryOptions, 'langOptions' => $langOptions, 'genres' => $genres]);
+            'countryOptions' => $countryOptions, 'langOptions' => $langOptions,
+            'langOrigOptions' => $langOrigOptions, 'genres' => $genres]);
     }
 
     public function actionSingle($id)
     {
         $book = self::services()->getBookByID($id);
+        $pages = self::paginateComments($id);
+        $comments = self::commentServices()->findCommentsForBook($pages, $id);
         $genres = self::genreServices()->getFilterOptionsGenres();
-        return $this->render('single', ['book' => $book, 'genres' => $genres]);
+        return $this->render('single', ['book' => $book, 'pages' => $pages, 'genres' => $genres,
+            'comments' => $comments]);
     }
 
     protected function services()
@@ -67,6 +73,11 @@ class BooksController extends Controller
         return new LanguageServices();
     }
 
+    protected function commentServices()
+    {
+        return new CommentServices();
+    }
+
     protected function paginate($per, $a, $c, $ph, $g, $lang, $langor, $year, $yeq, $ser, $trans)
     {
         $pagination = new Pagination(
@@ -74,6 +85,16 @@ class BooksController extends Controller
                 $year, $yeq, $ser, $trans),
                 'pageSize' => $per,
                 'defaultPageSize' => 30,
+            ]);
+        $pagination->pageSizeParam = false;
+        return $pagination;
+    }
+
+    protected function paginateComments($id)
+    {
+        $pagination = new Pagination(
+            ['totalCount' => self::commentServices()->getBookCommentsCount($id),
+                'defaultPageSize' => 2,
             ]);
         $pagination->pageSizeParam = false;
         return $pagination;
