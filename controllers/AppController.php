@@ -5,6 +5,7 @@ namespace app\controllers;
 use yii\web\Controller;
 use Yii;
 use app\services\GenreServices;
+use app\models\LoginForm;
 
 class AppController extends Controller
 {
@@ -41,8 +42,18 @@ class AppController extends Controller
 
     public function actionLogin()
     {
-        $genres = self::genreServices()->getFilterOptionsGenres();
-        return $this->render('login', ['genres' => $genres]);
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
     }
 
     public function actionLogout()

@@ -33,7 +33,7 @@ AppAsset::register($this);
                 <?php
                     echo Yii::$app->user->isGuest ?
                         '<a href="/login">Вхід</a> |' :
-                        '<a href="/logout">Вихід ('.Yii::$app->user->identity->getId().')</a> |';
+                        '<a href="/logout">Вихід ('.Yii::$app->user->identity->username.')</a> |';
                 ?>
                 <a href="#">FAQ</a></a>
             </div>
